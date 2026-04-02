@@ -6,6 +6,14 @@ import Layout from '@/components/layout/Layout';
 import { surahs } from '@/data/surahs';
 import { motion } from 'framer-motion';
 
+const fade = {
+  hidden: { opacity: 0, y: 12 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { delay: Math.min(i * 0.015, 0.4), duration: 0.35, ease: 'easeOut' },
+  }),
+};
+
 const SurahIndex = () => {
   const [query, setQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -30,19 +38,20 @@ const SurahIndex = () => {
 
   return (
     <Layout>
-      <div className="container py-12">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-foreground">Surah Index</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Browse all 114 chapters of the Noble Quran</p>
+      <div className="container page-padding">
+        {/* Header */}
+        <div className="mb-10">
+          <h1 className="text-foreground">Surah Index</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Browse all 114 chapters of the Noble Quran</p>
         </div>
 
         {/* Controls */}
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2 rounded-lg border bg-card px-3 py-2 flex-1 max-w-md">
-            <Search className="h-4 w-4 text-muted-foreground" />
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3 rounded-2xl border bg-card px-5 py-3 flex-1 max-w-md">
+            <Search className="h-[18px] w-[18px] text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search surahs..."
+              placeholder="Search by name, meaning, or number…"
               value={query}
               onChange={e => setQuery(e.target.value)}
               className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
@@ -59,8 +68,9 @@ const SurahIndex = () => {
                 {t === 'all' ? 'All' : t}
               </Button>
             ))}
+            <div className="w-px h-6 bg-border mx-1" />
             <Button variant="outline" size="sm" onClick={() => setSortBy(s => s === 'mushaf' ? 'revelation' : 'mushaf')}>
-              {sortBy === 'mushaf' ? 'Mushaf' : 'Revelation'}
+              {sortBy === 'mushaf' ? 'Mushaf Order' : 'Revelation Order'}
             </Button>
             <Button variant="ghost" size="icon" onClick={() => setViewMode(v => v === 'grid' ? 'list' : 'grid')}>
               {viewMode === 'grid' ? <List className="h-4 w-4" /> : <Grid3X3 className="h-4 w-4" />}
@@ -68,32 +78,36 @@ const SurahIndex = () => {
           </div>
         </div>
 
+        {/* Results count */}
+        <p className="mb-6 text-xs text-muted-foreground">{filtered.length} surah{filtered.length !== 1 ? 's' : ''} found</p>
+
         {/* Results */}
-        <div className={viewMode === 'grid' ? 'grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'flex flex-col gap-2'}>
+        <div className={viewMode === 'grid' ? 'grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'flex flex-col gap-2.5'}>
           {filtered.map((surah, i) => (
             <motion.div
               key={surah.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: Math.min(i * 0.02, 0.5), duration: 0.3 }}
+              initial="hidden"
+              animate="visible"
+              variants={fade}
+              custom={i}
             >
               <Link
                 to={`/quran?surah=${surah.id}`}
-                className="group flex items-center gap-4 rounded-xl border bg-card p-4 transition-all hover:shadow-md"
+                className="group flex items-center gap-4 rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-md"
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-xs font-semibold text-muted-foreground">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-xs font-semibold text-muted-foreground">
                   {surah.id}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center justify-between gap-3">
                     <span className="text-sm font-medium text-foreground">{surah.transliteration}</span>
                     <span className="font-arabic text-sm text-warm">{surah.name}</span>
                   </div>
-                  <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
                     <span>{surah.translation}</span>
-                    <span>·</span>
+                    <span className="text-border">·</span>
                     <span>{surah.totalVerses} verses</span>
-                    <span>·</span>
+                    <span className="text-border">·</span>
                     <span className={surah.type === 'Makki' ? 'text-olive' : 'text-warm'}>{surah.type}</span>
                   </div>
                 </div>
@@ -102,7 +116,12 @@ const SurahIndex = () => {
           ))}
         </div>
         {filtered.length === 0 && (
-          <div className="py-16 text-center text-sm text-muted-foreground">No surahs match your search.</div>
+          <div className="py-24 text-center">
+            <p className="text-sm text-muted-foreground">No surahs match your search.</p>
+            <Button variant="ghost" size="sm" className="mt-3" onClick={() => { setQuery(''); setFilterType('all'); }}>
+              Clear filters
+            </Button>
+          </div>
         )}
       </div>
     </Layout>

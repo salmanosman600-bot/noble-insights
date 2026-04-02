@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Search, Download, Globe } from 'lucide-react';
+import { Search, Download, Globe, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/layout/Layout';
+import { motion } from 'framer-motion';
 
 const translations = [
   { id: 1, language: 'English', translators: [
@@ -28,6 +29,14 @@ const translations = [
   ]},
 ];
 
+const fade = {
+  hidden: { opacity: 0, y: 12 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.05, duration: 0.4, ease: 'easeOut' },
+  }),
+};
+
 const Translations = () => {
   const [query, setQuery] = useState('');
 
@@ -38,14 +47,14 @@ const Translations = () => {
 
   return (
     <Layout>
-      <div className="container py-12">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-foreground">Translation Library</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Explore Quran translations in multiple languages</p>
+      <div className="container page-padding">
+        <div className="mb-10">
+          <h1 className="text-foreground">Translation Library</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Explore Quran translations across multiple languages and scholarly traditions</p>
         </div>
 
-        <div className="mb-8 flex items-center gap-2 rounded-lg border bg-card px-3 py-2 max-w-md">
-          <Search className="h-4 w-4 text-muted-foreground" />
+        <div className="mb-10 flex items-center gap-3 rounded-2xl border bg-card px-5 py-3 max-w-md">
+          <Search className="h-[18px] w-[18px] text-muted-foreground" />
           <input
             type="text" placeholder="Search by language or translator…"
             value={query} onChange={e => setQuery(e.target.value)}
@@ -53,31 +62,41 @@ const Translations = () => {
           />
         </div>
 
-        <div className="space-y-8">
-          {filtered.map(lang => (
-            <div key={lang.id}>
-              <div className="mb-4 flex items-center gap-2">
-                <Globe className="h-4 w-4 text-warm" />
-                <h2 className="text-lg font-semibold text-foreground">{lang.language}</h2>
-                <span className="text-xs text-muted-foreground">({lang.translators.length} translation{lang.translators.length > 1 ? 's' : ''})</span>
+        <div className="space-y-14">
+          {filtered.map((lang, li) => (
+            <motion.div key={lang.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={li}>
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary">
+                  <Globe className="h-4 w-4 text-warm" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-foreground">{lang.language}</h2>
+                  <p className="text-xs text-muted-foreground">{lang.translators.length} translation{lang.translators.length > 1 ? 's' : ''} available</p>
+                </div>
               </div>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {lang.translators.map(tr => (
-                  <div key={tr.name} className="rounded-xl border bg-card p-5 transition-shadow hover:shadow-md">
-                    <h3 className="text-sm font-medium text-foreground">{tr.name}</h3>
-                    <p className="mt-1 text-xs text-muted-foreground">{tr.style}</p>
-                    <div className="mt-3 flex items-center gap-2">
-                      {tr.complete && <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-olive">Complete</span>}
-                      {tr.audio && <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-warm">Audio</span>}
+                  <div key={tr.name} className="rounded-2xl border bg-card p-6 transition-shadow duration-300 hover:shadow-md">
+                    <h3 className="text-sm font-medium text-foreground leading-snug">{tr.name}</h3>
+                    <p className="mt-1.5 text-xs text-muted-foreground">{tr.style}</p>
+                    <div className="mt-4 flex items-center gap-2">
+                      {tr.complete && (
+                        <span className="flex items-center gap-1 rounded-lg bg-secondary px-2.5 py-1 text-[11px] font-medium text-olive">
+                          <Check className="h-3 w-3" /> Complete
+                        </span>
+                      )}
+                      {tr.audio && (
+                        <span className="rounded-lg bg-secondary px-2.5 py-1 text-[11px] font-medium text-warm">Audio</span>
+                      )}
                     </div>
-                    <div className="mt-4 flex gap-2">
+                    <div className="mt-5 flex gap-2.5">
                       <Button variant="outline" size="sm" className="flex-1">Read</Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-3 w-3" /></Button>
+                      <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground"><Download className="h-3.5 w-3.5" /></Button>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
