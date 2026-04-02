@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
+import { motion } from 'framer-motion';
 
 const articles = [
   { id: 1, title: 'Introduction to Surah Al-Kahf', category: 'Surah Introductions', excerpt: 'Discover the themes, context, and virtues of Surah Al-Kahf — one of the most beloved chapters recited every Friday.', readTime: '5 min' },
@@ -11,26 +12,36 @@ const articles = [
   { id: 6, title: 'The Names and Attributes of Allah in the Quran', category: 'Reflections', excerpt: 'A deep dive into how the Quran introduces us to the beautiful names and attributes of our Creator.', readTime: '8 min' },
 ];
 
+const fade = {
+  hidden: { opacity: 0, y: 12 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.06, duration: 0.4, ease: 'easeOut' },
+  }),
+};
+
 const Articles = () => {
   return (
     <Layout>
-      <div className="container py-12">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-foreground">Articles & Knowledge</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Beneficial readings, guides, and Quranic reflections</p>
+      <div className="container page-padding">
+        <div className="mb-10">
+          <h1 className="text-foreground">Articles & Knowledge</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Beneficial readings, guides, and Quranic reflections</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {articles.map(article => (
-            <Link key={article.id} to="#" className="group rounded-xl border bg-card p-6 transition-all hover:shadow-md">
-              <span className="text-xs font-medium text-warm">{article.category}</span>
-              <h3 className="mt-2 text-sm font-semibold text-foreground group-hover:text-warm transition-colors">{article.title}</h3>
-              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{article.excerpt}</p>
-              <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                <span>{article.readTime} read</span>
-                <ArrowRight className="h-3 w-3 text-warm opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-            </Link>
+          {articles.map((article, i) => (
+            <motion.div key={article.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={i}>
+              <Link to="#" className="group flex h-full flex-col rounded-2xl border bg-card p-7 transition-all duration-300 hover:shadow-md">
+                <span className="text-xs font-semibold uppercase tracking-wider text-warm">{article.category}</span>
+                <h3 className="mt-3 text-[15px] font-semibold text-foreground leading-snug group-hover:text-warm transition-colors duration-200">{article.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground flex-1">{article.excerpt}</p>
+                <div className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
+                  <span>{article.readTime} read</span>
+                  <ArrowRight className="h-3.5 w-3.5 text-warm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>

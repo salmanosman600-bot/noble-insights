@@ -11,12 +11,12 @@ const SearchPage = () => {
 
   return (
     <Layout>
-      <div className="container py-12">
+      <div className="container page-padding">
         <div className="mx-auto max-w-2xl">
-          <h1 className="text-2xl font-semibold text-foreground text-center">Search the Quran</h1>
-          <p className="mt-1 text-sm text-muted-foreground text-center">Search across verses, translations, tafsir, and more</p>
+          <h1 className="text-foreground text-center">Search the Quran</h1>
+          <p className="mt-2 text-sm text-muted-foreground text-center">Search across verses, translations, tafsir, and more</p>
 
-          <div className="mt-8 flex items-center gap-2 rounded-xl border bg-card px-4 py-3 shadow-sm">
+          <div className="mt-10 flex items-center gap-3 rounded-2xl border bg-card px-5 py-4 shadow-sm transition-all duration-300 focus-within:shadow-md focus-within:border-warm/30">
             <SearchIcon className="h-5 w-5 text-muted-foreground" />
             <input
               type="text"
@@ -29,7 +29,7 @@ const SearchPage = () => {
           </div>
 
           {/* Tabs */}
-          <div className="mt-6 flex items-center gap-1 overflow-x-auto">
+          <div className="mt-8 flex items-center gap-1 overflow-x-auto pb-1">
             {tabs.map(tab => (
               <Button
                 key={tab}
@@ -44,28 +44,27 @@ const SearchPage = () => {
 
           {/* Results */}
           {query ? (
-            <div className="mt-8 space-y-4">
-              {/* Sample result */}
-              <div className="rounded-xl border bg-card p-5">
-                <span className="text-xs font-medium text-warm">Quran · 94:5</span>
-                <p className="mt-2 font-arabic text-lg text-foreground">فَإِنَّ مَعَ الْعُسْرِ يُسْرًا</p>
-                <p className="mt-2 text-sm text-muted-foreground">For indeed, with hardship will be ease.</p>
+            <div className="mt-10 space-y-5">
+              <div className="rounded-2xl border bg-card p-6 transition-shadow duration-300 hover:shadow-sm">
+                <span className="text-xs font-semibold text-warm">Quran · 94:5</span>
+                <p className="mt-3 font-arabic text-lg leading-[2.2] text-foreground">فَإِنَّ مَعَ الْعُسْرِ يُسْرًا</p>
+                <p className="mt-3 text-sm text-muted-foreground">For indeed, with hardship will be ease.</p>
               </div>
-              <div className="rounded-xl border bg-card p-5">
-                <span className="text-xs font-medium text-warm">Quran · 13:28</span>
-                <p className="mt-2 font-arabic text-lg text-foreground">أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</p>
-                <p className="mt-2 text-sm text-muted-foreground">Verily, in the remembrance of Allah do hearts find rest.</p>
+              <div className="rounded-2xl border bg-card p-6 transition-shadow duration-300 hover:shadow-sm">
+                <span className="text-xs font-semibold text-warm">Quran · 13:28</span>
+                <p className="mt-3 font-arabic text-lg leading-[2.2] text-foreground">أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</p>
+                <p className="mt-3 text-sm text-muted-foreground">Verily, in the remembrance of Allah do hearts find rest.</p>
               </div>
             </div>
           ) : (
-            <div className="mt-16 text-center text-sm text-muted-foreground">
-              <p>Start typing to search across the entire Quran</p>
-              <div className="mt-6 flex flex-wrap justify-center gap-2">
-                {['patience', 'mercy', 'paradise', 'forgiveness', 'prayer'].map(s => (
+            <div className="mt-20 text-center">
+              <p className="text-sm text-muted-foreground">Start typing to search across the entire Quran</p>
+              <div className="mt-8 flex flex-wrap justify-center gap-2.5">
+                {['patience', 'mercy', 'paradise', 'forgiveness', 'prayer', 'gratitude'].map(s => (
                   <button
                     key={s}
                     onClick={() => setQuery(s)}
-                    className="rounded-full border bg-card px-3 py-1.5 text-xs text-muted-foreground hover:bg-hover transition-colors"
+                    className="rounded-xl border bg-card px-4 py-2 text-xs font-medium text-muted-foreground hover:bg-hover hover:text-foreground transition-all duration-200"
                   >
                     {s}
                   </button>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Menu, X, User, Globe } from 'lucide-react';
+import { Search, Menu, X, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -20,25 +20,25 @@ const Header = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-md">
-      <div className="container flex h-16 items-center justify-between">
+    <header className="sticky top-0 z-50 border-b bg-card/90 backdrop-blur-xl">
+      <div className="container flex h-[4.25rem] items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <span className="font-arabic text-xl text-warm">﷽</span>
-          <span className="text-lg font-semibold tracking-tight text-foreground">Noor</span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <span className="font-arabic text-2xl leading-none text-warm">﷽</span>
+          <span className="text-[17px] font-semibold tracking-tight text-foreground">Noor</span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-0.5 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               className={cn(
-                'rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-hover',
+                'rounded-lg px-3.5 py-2 text-[13px] font-medium transition-colors duration-200',
                 location.pathname === link.path
                   ? 'text-foreground bg-hover'
-                  : 'text-muted-foreground'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-hover'
               )}
             >
               {link.label}
@@ -47,18 +47,15 @@ const Header = () => {
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <Link to="/search">
-            <Button variant="ghost" size="icon" className="text-muted-foreground">
-              <Search className="h-4 w-4" />
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+              <Search className="h-[18px] w-[18px]" />
             </Button>
           </Link>
-          <Button variant="ghost" size="icon" className="hidden text-muted-foreground sm:flex">
-            <Globe className="h-4 w-4" />
-          </Button>
-          <Link to="/dashboard">
-            <Button variant="ghost" size="icon" className="hidden text-muted-foreground sm:flex">
-              <User className="h-4 w-4" />
+          <Link to="/dashboard" className="hidden sm:block">
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+              <User className="h-[18px] w-[18px]" />
             </Button>
           </Link>
           <Button
@@ -74,23 +71,30 @@ const Header = () => {
 
       {/* Mobile Nav */}
       {mobileOpen && (
-        <div className="border-t bg-card lg:hidden">
-          <nav className="container flex flex-col gap-1 py-4">
+        <div className="border-t bg-card lg:hidden animate-fade-in">
+          <nav className="container flex flex-col gap-1 py-5">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  'rounded-md px-3 py-2.5 text-sm font-medium transition-colors',
+                  'rounded-xl px-4 py-3 text-sm font-medium transition-colors',
                   location.pathname === link.path
                     ? 'text-foreground bg-hover'
-                    : 'text-muted-foreground hover:bg-hover'
+                    : 'text-muted-foreground hover:bg-hover hover:text-foreground'
                 )}
               >
                 {link.label}
               </Link>
             ))}
+            <Link
+              to="/dashboard"
+              onClick={() => setMobileOpen(false)}
+              className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground hover:bg-hover hover:text-foreground sm:hidden"
+            >
+              Dashboard
+            </Link>
           </nav>
         </div>
       )}
