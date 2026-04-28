@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { Bookmark, BookOpen, Heart, Clock, Star, Settings } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
@@ -26,7 +28,7 @@ const Dashboard = () => {
                 <div className="h-1.5 w-[41%] rounded-full bg-warm transition-all" />
               </div>
             </div>
-            <Link to="/quran?surah=18">
+            <Link href="/quran?surah=18">
               <Button variant="outline" size="sm" className="mt-4 w-full">Resume Reading</Button>
             </Link>
           </div>

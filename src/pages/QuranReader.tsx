@@ -1,5 +1,7 @@
+'use client';
+
 import { useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Play, Pause, Bookmark, BookmarkCheck, Copy, Share2, MessageSquare, ChevronDown, Minus, Plus, Settings, Check, SkipBack, SkipForward } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/layout/Layout';
@@ -63,7 +65,7 @@ const QuranReader = () => {
         <div className="border-b bg-card/90 backdrop-blur-sm">
           <div className="container flex items-center justify-between py-4">
             <div className="flex items-center gap-4">
-              <Link to="/surahs">
+              <Link href="/surahs">
                 <Button variant="ghost" size="sm" className="text-muted-foreground">← Surahs</Button>
               </Link>
               <div className="hidden sm:block">
@@ -176,7 +178,7 @@ const QuranReader = () => {
           {/* Surah Navigation */}
           <div className="mt-12 flex items-center justify-between">
             <Button variant="outline" disabled className="text-muted-foreground">← Previous Surah</Button>
-            <Link to="/quran?surah=2">
+            <Link href="/quran?surah=2">
               <Button variant="outline">Next: Al-Baqarah →</Button>
             </Link>
           </div>

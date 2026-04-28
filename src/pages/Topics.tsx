@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import Layout from '@/components/layout/Layout';
 import { motion } from 'framer-motion';
 
@@ -25,7 +27,7 @@ const fade = {
   }),
 };
 
-const Topics = () => {
+const Topics = ({ topicId }: { topicId?: string }) => {
   return (
     <Layout>
       <div className="container page-padding">

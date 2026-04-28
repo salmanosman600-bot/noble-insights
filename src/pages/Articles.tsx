@@ -1,5 +1,7 @@
+'use client';
+
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Layout from '@/components/layout/Layout';
 import { motion } from 'framer-motion';
 
@@ -32,7 +34,7 @@ const Articles = () => {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {articles.map((article, i) => (
             <motion.div key={article.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={i}>
-              <Link to="#" className="group flex h-full flex-col rounded-2xl border bg-card p-7 transition-all duration-300 hover:shadow-md">
+              <Link href="#" className="group flex h-full flex-col rounded-2xl border bg-card p-7 transition-all duration-300 hover:shadow-md">
                 <span className="text-xs font-semibold uppercase tracking-wider text-warm">{article.category}</span>
                 <h3 className="mt-3 text-[15px] font-semibold text-foreground leading-snug group-hover:text-warm transition-colors duration-200">{article.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground flex-1">{article.excerpt}</p>

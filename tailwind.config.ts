@@ -18,10 +18,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-        heading: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-        arabic: ['"Noto Naskh Arabic"', '"Amiri"', 'serif'],
-        amiri: ['"Amiri"', 'serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        arabic: ['var(--font-arabic)', 'var(--font-amiri)', 'serif'],
+        amiri: ['var(--font-amiri)', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",

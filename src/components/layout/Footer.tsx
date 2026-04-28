@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -20,11 +20,11 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-[13px] font-semibold uppercase tracking-wider text-foreground/70">Explore</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li><Link to="/quran" className="hover:text-foreground transition-colors duration-200">Read Quran</Link></li>
-              <li><Link to="/surahs" className="hover:text-foreground transition-colors duration-200">Surah Index</Link></li>
-              <li><Link to="/translations" className="hover:text-foreground transition-colors duration-200">Translations</Link></li>
-              <li><Link to="/tafsir" className="hover:text-foreground transition-colors duration-200">Tafsir</Link></li>
-              <li><Link to="/audio" className="hover:text-foreground transition-colors duration-200">Recitations</Link></li>
+              <li><Link href="/quran" className="hover:text-foreground transition-colors duration-200">Read Quran</Link></li>
+              <li><Link href="/surahs" className="hover:text-foreground transition-colors duration-200">Surah Index</Link></li>
+              <li><Link href="/translations" className="hover:text-foreground transition-colors duration-200">Translations</Link></li>
+              <li><Link href="/tafsir" className="hover:text-foreground transition-colors duration-200">Tafsir</Link></li>
+              <li><Link href="/audio" className="hover:text-foreground transition-colors duration-200">Recitations</Link></li>
             </ul>
           </div>
 
@@ -32,10 +32,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-[13px] font-semibold uppercase tracking-wider text-foreground/70">Discover</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li><Link to="/topics" className="hover:text-foreground transition-colors duration-200">Quran by Topics</Link></li>
-              <li><Link to="/articles" className="hover:text-foreground transition-colors duration-200">Articles</Link></li>
-              <li><Link to="/search" className="hover:text-foreground transition-colors duration-200">Search</Link></li>
-              <li><Link to="/dashboard" className="hover:text-foreground transition-colors duration-200">Dashboard</Link></li>
+              <li><Link href="/topics" className="hover:text-foreground transition-colors duration-200">Quran by Topics</Link></li>
+              <li><Link href="/articles" className="hover:text-foreground transition-colors duration-200">Articles</Link></li>
+              <li><Link href="/search" className="hover:text-foreground transition-colors duration-200">Search</Link></li>
+              <li><Link href="/dashboard" className="hover:text-foreground transition-colors duration-200">Dashboard</Link></li>
             </ul>
           </div>
 

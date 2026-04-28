@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Search, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';

@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Search, BookOpen, Languages, Headphones, BookMarked, ArrowRight, Star, Sparkles, Download, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -46,7 +48,7 @@ const Index = () => {
 
           {/* Search */}
           <motion.div className="mx-auto mt-10 max-w-lg" initial="hidden" animate="visible" variants={fade} custom={3}>
-            <Link to="/search" className="flex items-center gap-3.5 rounded-2xl border bg-card px-6 py-4 shadow-sm transition-all duration-300 hover:shadow-md hover:border-warm/30">
+            <Link href="/search" className="flex items-center gap-3.5 rounded-2xl border bg-card px-6 py-4 shadow-sm transition-all duration-300 hover:shadow-md hover:border-warm/30">
               <Search className="h-[18px] w-[18px] text-muted-foreground" />
               <span className="text-sm text-muted-foreground">Search the Quran, translations, tafsir…</span>
             </Link>
@@ -54,10 +56,10 @@ const Index = () => {
 
           {/* CTAs */}
           <motion.div className="mt-10 flex flex-wrap items-center justify-center gap-3" initial="hidden" animate="visible" variants={fade} custom={4}>
-            <Link to="/quran"><Button variant="hero" size="lg"><BookOpen className="h-4 w-4" /> Read Quran</Button></Link>
-            <Link to="/translations"><Button variant="hero-outline" size="lg"><Languages className="h-4 w-4" /> Translations</Button></Link>
-            <Link to="/audio"><Button variant="outline" size="lg"><Headphones className="h-4 w-4" /> Listen</Button></Link>
-            <Link to="/tafsir"><Button variant="outline" size="lg"><BookMarked className="h-4 w-4" /> Tafsir</Button></Link>
+            <Link href="/quran"><Button variant="hero" size="lg"><BookOpen className="h-4 w-4" /> Read Quran</Button></Link>
+            <Link href="/translations"><Button variant="hero-outline" size="lg"><Languages className="h-4 w-4" /> Translations</Button></Link>
+            <Link href="/audio"><Button variant="outline" size="lg"><Headphones className="h-4 w-4" /> Listen</Button></Link>
+            <Link href="/tafsir"><Button variant="outline" size="lg"><BookMarked className="h-4 w-4" /> Tafsir</Button></Link>
           </motion.div>
         </div>
       </section>
@@ -87,7 +89,7 @@ const Index = () => {
               <h2 className="text-foreground">Featured Surahs</h2>
               <p className="mt-2 text-sm text-muted-foreground">Begin your journey with these beloved chapters</p>
             </div>
-            <Link to="/surahs" className="hidden items-center gap-1.5 text-sm font-medium text-warm hover:text-warm/80 transition-colors sm:flex">
+            <Link href="/surahs" className="hidden items-center gap-1.5 text-sm font-medium text-warm hover:text-warm/80 transition-colors sm:flex">
               View All 114 <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -95,7 +97,7 @@ const Index = () => {
             {featuredSurahs.map((surah, i) => (
               <motion.div key={surah.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={i}>
                 <Link
-                  to={`/quran?surah=${surah.id}`}
+                  href={`/quran?surah=${surah.id}`}
                   className="group flex items-center gap-5 rounded-2xl border bg-card p-6 transition-all duration-300 hover:shadow-md"
                 >
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-secondary text-sm font-semibold text-muted-foreground">
@@ -144,7 +146,7 @@ const Index = () => {
                 </div>
               </div>
             </div>
-            <Link to="/quran?surah=18">
+            <Link href="/quran?surah=18">
               <Button variant="warm">Resume Reading</Button>
             </Link>
           </div>
@@ -191,7 +193,7 @@ const Index = () => {
             { icon: Headphones, title: 'Recitations', desc: 'Listen to beautiful Quran recitations by world-renowned reciters', path: '/audio' },
           ].map((item, i) => (
             <motion.div key={item.path} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={i}>
-              <Link to={item.path} className="group flex flex-col items-start rounded-2xl border bg-card p-8 transition-all duration-300 hover:shadow-md">
+              <Link href={item.path} className="group flex flex-col items-start rounded-2xl border bg-card p-8 transition-all duration-300 hover:shadow-md">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary">
                   <item.icon className="h-5 w-5 text-warm" />
                 </div>
@@ -214,7 +216,7 @@ const Index = () => {
               <h2 className="text-foreground">Quran by Topics</h2>
               <p className="mt-2 text-sm text-muted-foreground">Discover verses organized by theme</p>
             </div>
-            <Link to="/topics" className="hidden items-center gap-1.5 text-sm font-medium text-warm hover:text-warm/80 transition-colors sm:flex">
+            <Link href="/topics" className="hidden items-center gap-1.5 text-sm font-medium text-warm hover:text-warm/80 transition-colors sm:flex">
               All Topics <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -231,7 +233,7 @@ const Index = () => {
             ].map((topic) => (
               <Link
                 key={topic.en}
-                to={`/topics/${topic.en.toLowerCase()}`}
+                href={`/topics/${topic.en.toLowerCase()}`}
                 className="flex items-center gap-3 rounded-2xl border bg-card px-6 py-4 transition-all duration-300 hover:shadow-md"
               >
                 <span className="font-arabic text-lg text-warm">{topic.ar}</span>
