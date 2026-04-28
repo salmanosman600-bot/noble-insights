@@ -40,7 +40,7 @@ const Topics = ({ topicId }: { topicId?: string }) => {
           {topics.map((topic, i) => (
             <motion.div key={topic.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={i}>
               <Link
-                to={`/topics/${topic.id}`}
+                href={`/topics/${topic.id}`}
                 className="group flex flex-col items-center rounded-2xl border bg-card p-8 text-center transition-all duration-300 hover:shadow-md"
               >
                 <p className="font-arabic text-3xl leading-relaxed text-warm">{topic.nameAr}</p>
