@@ -1,0 +1,16 @@
+{
+  "/Articles": "pages/Articles.js",
+  "/Audio": "pages/Audio.js",
+  "/Dashboard": "pages/Dashboard.js",
+  "/NotFound": "pages/NotFound.js",
+  "/Index": "pages/Index.js",
+  "/QuranReader": "pages/QuranReader.js",
+  "/SearchPage": "pages/SearchPage.js",
+  "/SurahIndex": "pages/SurahIndex.js",
+  "/Tafsir": "pages/Tafsir.js",
+  "/_app": "pages/_app.js",
+  "/Translations": "pages/Translations.js",
+  "/Topics": "pages/Topics.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js"
+}
