@@ -1,12 +1,19 @@
 import type { Metadata } from 'next';
-import QuranReader from '@/pages/QuranReader';
+import { Suspense } from 'react';
+import QuranReader from '@/features/quran/components/quran-reader';
 
 export const metadata: Metadata = {
   title: 'Read Quran',
   description:
-    'Read the Noble Quran with Arabic text, transliteration, and English translation. Adjust font size, bookmark verses, and access tafsir inline.',
+    'Read the Noble Quran with Uzbek translation (At-Tafsir Al-Muyassar). Adjust font size, toggle Cyrillic/Latin script, and bookmark verses.',
 };
 
+// Suspense wrapper required because the reader calls `useSearchParams()`,
+// which forces client-side reading of the URL during prerender.
 export default function QuranPage() {
-  return <QuranReader />;
+  return (
+    <Suspense fallback={null}>
+      <QuranReader />
+    </Suspense>
+  );
 }

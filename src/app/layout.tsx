@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans, Noto_Naskh_Arabic, Amiri } from 'next/font/google';
-import Providers from '@/components/Providers';
+import Providers from '@/shared/components/providers';
 import '@/index.css';
 
 // ── Fonts loaded via next/font (zero render-blocking) ──────────────────────
