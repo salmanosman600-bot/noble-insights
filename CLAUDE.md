@@ -40,13 +40,18 @@ Example: [src/app/surahs/page.tsx](src/app/surahs/page.tsx) renders [src/pages/S
 
 ### B. Feature-based pattern (the `quran` slice and any new features)
 
-The `quran` feature lives at [src/features/quran/](src/features/quran/) and is the model for future migrations:
+The `quran` feature lives at [src/features/quran/](src/features/quran/) and is the model for future migrations. It currently owns both reading (`/quran`) and the surah index (`/surahs`):
 
 ```
 src/features/quran/
-├── components/quran-reader.tsx   # 'use client' UI
+├── components/
+│   ├── quran-reader.tsx          # 'use client' — /quran reader UI
+│   └── surah-index.tsx           # 'use client' — /surahs grid w/ search, filter, sort
+├── data/
+│   └── surahs.ts                 # canonical 114-surah metadata; old src/data/surahs.ts is a re-export shim
 ├── hooks/use-sura-translation.ts # TanStack Query wrapper
 ├── services/quran.service.ts     # API calls via shared apiClient
+├── store/script.store.ts         # Zustand store for global Cyrillic↔Latin preference (persisted)
 ├── utils/transliterate.ts        # Cyrillic → Latin Uzbek
 └── types.ts                      # Aya, SuraResponse, Script, DEFAULT_TRANSLATION_KEY
 ```
@@ -76,7 +81,9 @@ QuranReader (client)
   → fetch('https://quranenc.com/api/v1/translation/sura/uzbek_moyassar/{n}')
 ```
 
-Default translation: `uzbek_moyassar` (At-Tafsir Al-Muyassar in Uzbek Cyrillic). Other available Uzbek keys: `uzbek_rwwad`, `uzbek_mansour`. The `Script` toggle in the reader transliterates the Cyrillic translation to Latin client-side via [src/features/quran/utils/transliterate.ts](src/features/quran/utils/transliterate.ts) — no second fetch. **Attribution to QuranEnc.com is required** by their terms and is rendered at the bottom of the reader; don't remove it.
+Default translation: `uzbek_moyassar` (At-Tafsir Al-Muyassar in Uzbek Cyrillic). Other available Uzbek keys: `uzbek_rwwad`, `uzbek_mansour`. The script toggle in the global Header writes to [src/features/quran/store/script.store.ts](src/features/quran/store/script.store.ts) (Zustand + `persist` to localStorage); the reader subscribes via `useScriptStore((s) => s.script)` and runs Cyrillic→Latin transliteration client-side via [src/features/quran/utils/transliterate.ts](src/features/quran/utils/transliterate.ts) — no second fetch. **Attribution to QuranEnc.com is required** by their terms and is rendered at the bottom of the reader; don't remove it.
+
+**Known minor:** the script toggle's first paint may briefly show "Кир" then snap to "Lot" if a user previously selected Latin. That's Zustand persist hydrating from localStorage after mount. Acceptable for now; if it becomes annoying, gate the button text on a `mounted` flag set in `useEffect`, or use `useScriptStore.persist.hasHydrated()`.
 
 ### Root layout & chrome
 

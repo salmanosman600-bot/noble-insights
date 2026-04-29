@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import SurahIndex from '@/pages/SurahIndex';
+import SurahIndex from '@/features/quran/components/surah-index';
 
 export const metadata: Metadata = {
   title: 'Surah Index — All 114 Chapters',

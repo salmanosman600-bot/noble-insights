@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, Menu, X, User } from 'lucide-react';
+import { Search, Menu, X, User, Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useScriptStore } from '@/features/quran/store/script.store';
 
 const navLinks = [
   { label: 'Home', path: '/' },
@@ -21,6 +22,8 @@ const navLinks = [
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const script = useScriptStore((s) => s.script);
+  const toggleScript = useScriptStore((s) => s.toggle);
 
   return (
     <header className="sticky top-0 z-50 border-b bg-card/90 backdrop-blur-xl">
@@ -52,6 +55,17 @@ const Header = () => {
 
         {/* Actions */}
         <div className="flex items-center gap-1.5">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleScript}
+            className="text-muted-foreground hover:text-foreground"
+            aria-label={`Switch to ${script === 'cyrillic' ? 'Latin' : 'Cyrillic'} script`}
+            title={`Uzbek script: ${script === 'cyrillic' ? 'Кирилл' : 'Lotin'}`}
+          >
+            <Languages className="mr-1.5 h-4 w-4" />
+            <span className="text-[13px] font-medium">{script === 'cyrillic' ? 'Кир' : 'Lot'}</span>
+          </Button>
           <Link href="/search" aria-label="Search">
             <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground" tabIndex={-1} aria-hidden="true">
               <Search className="h-[18px] w-[18px]" />

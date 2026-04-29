@@ -16,7 +16,6 @@ import {
   Settings,
   SkipBack,
   SkipForward,
-  Languages,
   AlertCircle,
   RefreshCw,
 } from 'lucide-react';
@@ -27,6 +26,7 @@ import { surahs } from '@/data/surahs';
 import { toast } from 'sonner';
 import { useSuraTranslation } from '../hooks/use-sura-translation';
 import { transliterateUzbekToLatin } from '../utils/transliterate';
+import { useScriptStore } from '../store/script.store';
 import { DEFAULT_TRANSLATION_KEY, type Aya, type Script } from '../types';
 import { routes } from '@/config/routes';
 
@@ -51,7 +51,7 @@ const QuranReader = () => {
   const [arabicSize, setArabicSize] = useState(22);
   const [translationSize, setTranslationSize] = useState(17);
   const [showSettings, setShowSettings] = useState(false);
-  const [script, setScript] = useState<Script>('cyrillic');
+  const script = useScriptStore((s) => s.script);
   const [bookmarkedVerses, setBookmarkedVerses] = useState<Set<number>>(new Set());
   const [playingVerse, setPlayingVerse] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -140,16 +140,6 @@ const QuranReader = () => {
               <span className="font-arabic text-xl text-warm">{currentSurah.name}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <Button
-                variant={script === 'latin' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setScript((s) => (s === 'cyrillic' ? 'latin' : 'cyrillic'))}
-                aria-label="Toggle script"
-                title="Toggle Cyrillic / Latin"
-              >
-                <Languages className="mr-1.5 h-3.5 w-3.5" />
-                {script === 'latin' ? 'Lot' : 'Кир'}
-              </Button>
               <Button
                 variant="ghost"
                 size="icon"
