@@ -37,6 +37,11 @@ jobs:
           # Produces the correct basePath: /noble-insights (or whatever the repo name is)
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
 
+      # GitHub Pages runs Jekyll by default, which ignores _next/ (underscore dirs).
+      # .nojekyll disables Jekyll so the _next/ assets are served correctly.
+      - name: Disable Jekyll
+        run: touch ./out/.nojekyll
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
