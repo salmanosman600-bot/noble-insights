@@ -117,7 +117,7 @@ const QuranReader = () => {
                   {currentSurah.translation} · {currentSurah.totalVerses} oyat · {currentSurah.type}
                 </p>
               </div>
-              <span className="font-quran text-xl text-warm">{currentSurah.name}</span>
+              <span className="font-hafs text-xl text-warm">{currentSurah.name}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Button
@@ -194,7 +194,7 @@ const QuranReader = () => {
         {/* Bismillah */}
         {currentSurah.id !== 1 && currentSurah.id !== 9 && (
           <div className="container py-12 text-center">
-            <p className="font-quran text-3xl text-warm leading-loose">
+            <p className="font-hafs text-3xl text-warm leading-loose">
               بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
             </p>
           </div>
@@ -305,7 +305,7 @@ const QuranReader = () => {
 
                     {/* Arabic — Uthmanic (Amiri Quran) font */}
                     <p
-                      className="font-quran text-center leading-[2.4] text-foreground"
+                      className="font-hafs text-center leading-[2.4] text-foreground"
                       style={{ fontSize: `${arabicSize}px` }}
                     >
                       {verse.arabic_text}

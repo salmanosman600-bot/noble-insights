@@ -1,5 +1,22 @@
 /* Fonts loaded via next/font/google in app/layout.tsx (zero render-blocking) */
 
+/*
+ * KFGQPC Uthmanic Script Hafs — the official Unicode Mushaf Al-Madinah font
+ * from King Fahd Quran Printing Complex (qurancomplex.gov.sa). Free to use.
+ * Works with standard Unicode Quran text (Hafs ʿan ʿĀṣim).
+ */
+@font-face {
+  font-family: 'QCF Hafs';
+  src:
+    local('KFGQPC Uthmanic Script HAFS'),
+    local('UthmanicHafs_v20'),
+    url('https://fonts.qurancomplex.gov.sa/wp-content/uploads/2020/01/UthmanicHafs1Ver18.woff2') format('woff2'),
+    url('https://fonts.qurancomplex.gov.sa/wp-content/uploads/2020/01/UthmanicHafs1Ver18.woff') format('woff');
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

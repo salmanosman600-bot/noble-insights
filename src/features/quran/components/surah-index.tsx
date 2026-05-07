@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { Search, Grid3X3, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/layout/Layout';
@@ -13,15 +12,6 @@ import { useTranslit } from '../hooks/use-translit';
 type FilterType = 'all' | 'Makki' | 'Madani';
 type SortMode = 'mushaf' | 'revelation';
 type ViewMode = 'grid' | 'list';
-
-const fade = {
-  hidden: { opacity: 0, y: 12 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: Math.min(i * 0.015, 0.4), duration: 0.35, ease: 'easeOut' },
-  }),
-};
 
 const SurahIndex = () => {
   const translit = useTranslit();
@@ -113,27 +103,23 @@ const SurahIndex = () => {
               : 'flex flex-col gap-2.5'
           }
         >
-          {filtered.map((surah, i) => (
-            <motion.div
+          {filtered.map((surah) => (
+            <Link
               key={surah.id}
-              initial="hidden"
-              animate="visible"
-              variants={fade}
-              custom={i}
+              href={routes.surah(surah.id)}
+              className="group flex items-center gap-4 rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-md"
             >
-              <Link
-                href={routes.surah(surah.id)}
-                className="group flex items-center gap-4 rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-md"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-xs font-semibold text-muted-foreground">
-                  {surah.id}
-                </div>
-                <div className="min-w-0 flex-1">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-xs font-semibold text-muted-foreground">
+                {surah.id}
+              </div>
+              <div className="min-w-0 flex-1 flex items-center justify-between gap-3">
+                <div>
                   <span className="block text-sm font-medium text-foreground">{translit(surah.translationUz)}</span>
                   <span className="block text-xs text-muted-foreground">{surah.totalVerses} oyat</span>
                 </div>
-              </Link>
-            </motion.div>
+                <span className="font-hafs text-2xl text-warm leading-none shrink-0" dir="rtl">{surah.name}</span>
+              </div>
+            </Link>
           ))}
         </div>
 

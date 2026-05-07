@@ -24,6 +24,7 @@ export default {
         quran: ['var(--font-quran)', 'var(--font-amiri)', 'serif'],
         amiri: ['var(--font-amiri)', 'serif'],
         thuluth: ['var(--font-thuluth)', 'var(--font-amiri)', 'serif'],
+        hafs: ['QCF Hafs', 'KFGQPC Uthmanic Script HAFS', 'var(--font-quran)', 'var(--font-amiri)', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",

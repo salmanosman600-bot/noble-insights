@@ -68,11 +68,12 @@ const Index = () => {
           </motion.div>
 
           <motion.p
-            className="font-quran text-5xl text-primary md:text-6xl"
+            className="font-hafs text-5xl text-primary md:text-6xl"
             style={{ lineHeight: 1.9 }}
+            dir="rtl"
             initial="hidden" animate="visible" variants={fade} custom={1}
           >
-            \u0628\u0650\u0633\u0652\u0645\u0650 \u0671\u0644\u0644\u0651\u064e\u0647\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0670\u0646\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650
+            {'\u0628\u0650\u0633\u0652\u0645\u0650 \u0671\u0644\u0644\u0651\u064e\u0647\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0670\u0646\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650'}
           </motion.p>
 
           <motion.h1
@@ -154,27 +155,23 @@ const Index = () => {
               : 'flex flex-col gap-2.5'
           }
         >
-          {filtered.map((surah, i) => (
-            <motion.div
+          {filtered.map((surah) => (
+            <Link
               key={surah.id}
-              initial="hidden"
-              animate="visible"
-              variants={fade}
-              custom={i}
+              href={routes.surah(surah.id)}
+              className="group flex items-center gap-4 rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-md hover:border-primary/15 hover:-translate-y-0.5"
             >
-              <Link
-                href={routes.surah(surah.id)}
-                className="group flex items-center gap-4 rounded-2xl border bg-card p-5 transition-all duration-300 hover:shadow-md hover:border-primary/15 hover:-translate-y-0.5"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-xs font-semibold text-muted-foreground">
-                  {surah.id}
-                </div>
-                <div className="min-w-0 flex-1">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-xs font-semibold text-muted-foreground">
+                {surah.id}
+              </div>
+              <div className="min-w-0 flex-1 flex items-center justify-between gap-3">
+                <div>
                   <span className="block text-sm font-medium text-foreground">{translit(surah.translationUz)}</span>
                   <span className="block text-xs text-muted-foreground">{surah.totalVerses} oyat</span>
                 </div>
-              </Link>
-            </motion.div>
+                <span className="font-hafs text-2xl text-warm leading-none shrink-0" dir="rtl">{surah.name}</span>
+              </div>
+            </Link>
           ))}
         </div>
 
