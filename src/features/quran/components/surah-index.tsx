@@ -51,9 +51,9 @@ const SurahIndex = () => {
     <Layout>
       <div className="container page-padding">
         <div className="mb-10">
-          <h1 className="text-foreground">Surah Index</h1>
+          <h1 className="text-foreground">Suralar Ro'yxati</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Browse all 114 chapters of the Noble Quran
+            Qur'oni Karimning barcha 114 surasini ko'ring
           </p>
         </div>
 
@@ -62,7 +62,7 @@ const SurahIndex = () => {
             <Search className="h-[18px] w-[18px] text-muted-foreground" />
             <input
               type="search"
-              placeholder="Search by name, meaning, or number…"
+              placeholder="Nom, ma'no yoki raqam bo'yicha qidiring…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
@@ -77,7 +77,7 @@ const SurahIndex = () => {
                 size="sm"
                 onClick={() => setFilterType(t)}
               >
-                {t === 'all' ? 'All' : t}
+                {t === 'all' ? 'Barchasi' : t}
               </Button>
             ))}
             <div className="mx-1 h-6 w-px bg-border" />
@@ -86,13 +86,13 @@ const SurahIndex = () => {
               size="sm"
               onClick={() => setSortBy((s) => (s === 'mushaf' ? 'revelation' : 'mushaf'))}
             >
-              {sortBy === 'mushaf' ? 'Mushaf Order' : 'Revelation Order'}
+              {sortBy === 'mushaf' ? 'Mushaf Tartibi' : 'Nuzul Tartibi'}
             </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setViewMode((v) => (v === 'grid' ? 'list' : 'grid'))}
-              aria-label={viewMode === 'grid' ? 'Switch to list view' : 'Switch to grid view'}
+              aria-label={viewMode === 'grid' ? 'Ro\'yxat ko\'rinishiga o\'tish' : 'Jadval ko\'rinishiga o\'tish'}
             >
               {viewMode === 'grid' ? <List className="h-4 w-4" /> : <Grid3X3 className="h-4 w-4" />}
             </Button>
@@ -100,7 +100,7 @@ const SurahIndex = () => {
         </div>
 
         <p className="mb-6 text-xs text-muted-foreground">
-          {filtered.length} surah{filtered.length !== 1 ? 's' : ''} found
+          {filtered.length} ta sura topildi
         </p>
 
         <div
@@ -133,7 +133,7 @@ const SurahIndex = () => {
                   <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
                     <span>{surah.translation}</span>
                     <span className="text-border">·</span>
-                    <span>{surah.totalVerses} verses</span>
+                    <span>{surah.totalVerses} oyat</span>
                     <span className="text-border">·</span>
                     <span className={surah.type === 'Makki' ? 'text-olive' : 'text-warm'}>
                       {surah.type}
@@ -147,7 +147,7 @@ const SurahIndex = () => {
 
         {filtered.length === 0 && (
           <div className="py-24 text-center">
-            <p className="text-sm text-muted-foreground">No surahs match your search.</p>
+            <p className="text-sm text-muted-foreground">Qidiruvingizga mos sura topilmadi.</p>
             <Button
               variant="ghost"
               size="sm"
@@ -157,7 +157,7 @@ const SurahIndex = () => {
                 setFilterType('all');
               }}
             >
-              Clear filters
+              Filtrlarni tozalash
             </Button>
           </div>
         )}

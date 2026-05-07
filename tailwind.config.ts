@@ -20,7 +20,8 @@ export default {
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         heading: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        arabic: ['var(--font-arabic)', 'var(--font-amiri)', 'serif'],
+        arabic: ['var(--font-amiri)', 'serif'],
+        quran: ['var(--font-quran)', 'var(--font-amiri)', 'serif'],
         amiri: ['var(--font-amiri)', 'serif'],
       },
       colors: {
@@ -111,6 +112,18 @@ export default {
           from: { opacity: "0", transform: "translateY(24px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        "shimmer": {
+          from: { backgroundPosition: "200% center" },
+          to: { backgroundPosition: "-200% center" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.5" },
+          "50%": { opacity: "0.9" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -118,6 +131,9 @@ export default {
         "fade-in": "fade-in 0.6s ease-out forwards",
         "fade-in-slow": "fade-in-slow 1s ease-out forwards",
         "slide-up": "slide-up 0.8s ease-out forwards",
+        "shimmer": "shimmer 3s linear infinite",
+        "float": "float 4s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 3s ease-in-out infinite",
       },
     },
   },

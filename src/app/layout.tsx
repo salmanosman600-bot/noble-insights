@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans, Noto_Naskh_Arabic, Amiri } from 'next/font/google';
+import { Plus_Jakarta_Sans, Amiri, Amiri_Quran } from 'next/font/google';
 import Providers from '@/shared/components/providers';
 import '@/index.css';
 
@@ -11,13 +11,6 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
-const notoNaskhArabic = Noto_Naskh_Arabic({
-  subsets: ['arabic'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-arabic',
-  display: 'swap',
-});
-
 const amiri = Amiri({
   subsets: ['arabic'],
   weight: ['400', '700'],
@@ -25,32 +18,41 @@ const amiri = Amiri({
   display: 'swap',
 });
 
+// Amiri Quran — Uthmanic script, specifically designed for Quranic text
+const amiriQuran = Amiri_Quran({
+  subsets: ['arabic'],
+  weight: ['400'],
+  variable: '--font-quran',
+  display: 'swap',
+});
+
 // ── Default metadata (pages override per-route) ────────────────────────────
 export const metadata: Metadata = {
+  metadataBase: new URL('https://noor.app'),
   title: {
-    default: 'Noor — Noble Quran',
+    default: "Noor — Qur'oni Karim",
     template: '%s | Noor',
   },
   description:
-    'A refined digital experience for the Noble Quran. Access translations, tafsir, recitations, and beneficial Islamic knowledge.',
-  keywords: ['Quran', 'Noble Quran', 'Islam', 'Tafsir', 'Translations', 'Recitations', 'Surahs'],
+    "Qur'oni Karim uchun nozik raqamli tajriba. Tarjimalar, tafsir, qiroatlar va foydali islomiy bilimlarni oling.",
+  keywords: ["Qur'on", "Qur'oni Karim", 'Islom', 'Tafsir', 'Tarjimalar', 'Qiroatlar', 'Suralar'],
   authors: [{ name: 'Noor' }],
   creator: 'Noor',
   openGraph: {
     type: 'website',
-    locale: 'en_US',
+    locale: 'uz_UZ',
     url: 'https://noor.app',
-    siteName: 'Noor — Noble Quran',
-    title: 'Noor — Noble Quran',
+    siteName: "Noor — Qur'oni Karim",
+    title: "Noor — Qur'oni Karim",
     description:
-      'A refined digital experience for the Noble Quran. Access translations, tafsir, recitations, and beneficial Islamic knowledge.',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Noor — Noble Quran' }],
+      "Qur'oni Karim uchun nozik raqamli tajriba. Tarjimalar, tafsir, qiroatlar va foydali islomiy bilimlarni oling.",
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: "Noor — Qur'oni Karim" }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Noor — Noble Quran',
+    title: "Noor — Qur'oni Karim",
     description:
-      'A refined digital experience for the Noble Quran.',
+      "Qur'oni Karim uchun nozik raqamli tajriba.",
     images: ['/og-image.png'],
   },
   robots: {
@@ -72,8 +74,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
-      lang="en"
-      className={`${plusJakartaSans.variable} ${notoNaskhArabic.variable} ${amiri.variable}`}
+      lang="uz"
+      className={`${plusJakartaSans.variable} ${amiri.variable} ${amiriQuran.variable}`}
       suppressHydrationWarning
     >
       <body className={plusJakartaSans.className}>

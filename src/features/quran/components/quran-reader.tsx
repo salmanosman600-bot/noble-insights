@@ -1,34 +1,31 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import {
-  Play,
-  Pause,
-  Bookmark,
-  BookmarkCheck,
-  Copy,
-  Share2,
-  ChevronDown,
-  Minus,
-  Plus,
-  Settings,
-  SkipBack,
-  SkipForward,
-  AlertCircle,
-  RefreshCw,
-} from 'lucide-react';
+import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import Layout from '@/components/layout/Layout';
+import { routes } from '@/config/routes';
 import { surahs } from '@/data/surahs';
+import {
+    AlertCircle,
+    Bookmark,
+    BookmarkCheck,
+    Copy,
+    Minus,
+    Plus,
+    RefreshCw,
+    Settings,
+    Share2,
+    Volume2,
+} from 'lucide-react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useSuraTranslation } from '../hooks/use-sura-translation';
-import { transliterateUzbekToLatin } from '../utils/transliterate';
+import { useBookmarkStore, bookmarkKey } from '../store/bookmark.store';
 import { useScriptStore } from '../store/script.store';
 import { DEFAULT_TRANSLATION_KEY, type Aya, type Script } from '../types';
-import { routes } from '@/config/routes';
+import { transliterateUzbekToLatin } from '../utils/transliterate';
 
 // Translation-prominent reader: Uzbek translation is the primary surface;
 // Arabic is preserved above each verse but at a softer visual weight.
@@ -48,13 +45,12 @@ const QuranReader = () => {
   const suraId = clampSuraId(searchParams?.get('surah') ?? null);
   const currentSurah = surahs[suraId - 1] ?? surahs[0];
 
-  const [arabicSize, setArabicSize] = useState(22);
-  const [translationSize, setTranslationSize] = useState(17);
+  const [arabicSize, setArabicSize] = useState(28);
+  const [translationSize, setTranslationSize] = useState(18);
   const [showSettings, setShowSettings] = useState(false);
   const script = useScriptStore((s) => s.script);
-  const [bookmarkedVerses, setBookmarkedVerses] = useState<Set<number>>(new Set());
-  const [playingVerse, setPlayingVerse] = useState<number | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const bookmarks = useBookmarkStore((s) => s.bookmarks);
+  const toggleBookmarkInStore = useBookmarkStore((s) => s.toggle);
 
   const { data, isLoading, isError, refetch, isFetching } = useSuraTranslation(
     DEFAULT_TRANSLATION_KEY,
@@ -64,25 +60,17 @@ const QuranReader = () => {
   const verses = useMemo<Aya[]>(() => data?.result ?? [], [data]);
 
   const toggleBookmark = useCallback((verseNum: number) => {
-    setBookmarkedVerses((prev) => {
-      const next = new Set(prev);
-      if (next.has(verseNum)) {
-        next.delete(verseNum);
-        toast('Bookmark removed');
-      } else {
-        next.add(verseNum);
-        toast('Verse bookmarked');
-      }
-      return next;
-    });
-  }, []);
+    const was = bookmarks.includes(bookmarkKey(suraId, verseNum));
+    toggleBookmarkInStore(suraId, verseNum);
+    toast(was ? "Xatcho'p olib tashlandi" : "Oyat xatcho'p qilindi");
+  }, [bookmarks, toggleBookmarkInStore, suraId]);
 
   const copyVerse = useCallback(
     (verse: Aya) => {
       const translation = renderTranslation(verse.translation, script);
       const text = `${verse.arabic_text}\n\n${translation}\n\n— ${currentSurah.transliteration} ${verse.sura}:${verse.aya}`;
       navigator.clipboard.writeText(text);
-      toast('Copied to clipboard');
+      toast('Buferga nusxa olindi');
     },
     [currentSurah, script],
   );
@@ -102,17 +90,9 @@ const QuranReader = () => {
     [currentSurah, script, copyVerse],
   );
 
-  const togglePlay = useCallback(
-    (verseNum: number) => {
-      if (playingVerse === verseNum) {
-        setIsPlaying((p) => !p);
-      } else {
-        setPlayingVerse(verseNum);
-        setIsPlaying(true);
-      }
-    },
-    [playingVerse],
-  );
+  const playAudio = useCallback(() => {
+    toast.info("Audio tez orada qo'shiladi");
+  }, []);
 
   const prevSuraId = suraId > 1 ? suraId - 1 : null;
   const nextSuraId = suraId < 114 ? suraId + 1 : null;
@@ -126,7 +106,7 @@ const QuranReader = () => {
             <div className="flex items-center gap-4">
               <Link href={routes.surahs}>
                 <Button variant="ghost" size="sm" className="text-muted-foreground">
-                  ← Surahs
+                  ← Suralar
                 </Button>
               </Link>
               <div className="hidden sm:block">
@@ -134,10 +114,10 @@ const QuranReader = () => {
                   {currentSurah.transliteration}
                 </h1>
                 <p className="text-xs text-muted-foreground">
-                  {currentSurah.translation} · {currentSurah.totalVerses} verses · {currentSurah.type}
+                  {currentSurah.translation} · {currentSurah.totalVerses} oyat · {currentSurah.type}
                 </p>
               </div>
-              <span className="font-arabic text-xl text-warm">{currentSurah.name}</span>
+              <span className="font-quran text-xl text-warm">{currentSurah.name}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Button
@@ -145,7 +125,7 @@ const QuranReader = () => {
                 size="icon"
                 onClick={() => setShowSettings((s) => !s)}
                 className="text-muted-foreground"
-                aria-label="Reader settings"
+                aria-label="O'quvchi sozlamalari"
               >
                 <Settings className="h-4 w-4" />
               </Button>
@@ -157,13 +137,13 @@ const QuranReader = () => {
             <div className="border-t bg-card animate-fade-in">
               <div className="container flex flex-wrap items-center gap-8 py-4">
                 <div className="flex items-center gap-3 text-sm">
-                  <span className="text-muted-foreground">Arabic size</span>
+                  <span className="text-muted-foreground">Arab shrift o'lchami</span>
                   <Button
                     variant="outline"
                     size="icon"
                     className="h-8 w-8"
                     onClick={() => setArabicSize((s) => Math.max(16, s - 2))}
-                    aria-label="Decrease Arabic size"
+                    aria-label="Arab shrift o'lchamini kichraytirish"
                   >
                     <Minus className="h-3 w-3" />
                   </Button>
@@ -173,19 +153,19 @@ const QuranReader = () => {
                     size="icon"
                     className="h-8 w-8"
                     onClick={() => setArabicSize((s) => Math.min(40, s + 2))}
-                    aria-label="Increase Arabic size"
+                    aria-label="Arab shrift o'lchamini kattalashtirish"
                   >
                     <Plus className="h-3 w-3" />
                   </Button>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <span className="text-muted-foreground">Translation size</span>
+                  <span className="text-muted-foreground">Tarjima o'lchami</span>
                   <Button
                     variant="outline"
                     size="icon"
                     className="h-8 w-8"
                     onClick={() => setTranslationSize((s) => Math.max(13, s - 1))}
-                    aria-label="Decrease translation size"
+                    aria-label="Tarjima o'lchamini kichraytirish"
                   >
                     <Minus className="h-3 w-3" />
                   </Button>
@@ -195,15 +175,15 @@ const QuranReader = () => {
                     size="icon"
                     className="h-8 w-8"
                     onClick={() => setTranslationSize((s) => Math.min(28, s + 1))}
-                    aria-label="Increase translation size"
+                    aria-label="Tarjima o'lchamini kattalashtirish"
                   >
                     <Plus className="h-3 w-3" />
                   </Button>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <span className="text-muted-foreground">Translation</span>
+                  <span className="text-muted-foreground">Tarjima</span>
                   <span className="rounded-lg bg-secondary px-3 py-1.5 text-xs font-medium text-foreground">
-                    Uzbek · At-Tafsir Al-Muyassar
+                    O'zbek · At-Tafsir Al-Muyassar
                   </span>
                 </div>
               </div>
@@ -214,14 +194,14 @@ const QuranReader = () => {
         {/* Bismillah */}
         {currentSurah.id !== 1 && currentSurah.id !== 9 && (
           <div className="container py-12 text-center">
-            <p className="font-arabic text-3xl text-warm leading-loose">
+            <p className="font-quran text-3xl text-warm leading-loose">
               بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
             </p>
           </div>
         )}
 
         {/* Verses */}
-        <div className="container max-w-3xl py-10 pb-36">
+          <div className="container max-w-3xl py-10">
           {isLoading ? (
             <div className="space-y-5">
               {Array.from({ length: 7 }).map((_, i) => (
@@ -236,69 +216,65 @@ const QuranReader = () => {
           ) : isError ? (
             <div className="rounded-2xl border bg-card p-10 text-center">
               <AlertCircle className="mx-auto h-8 w-8 text-destructive" />
-              <p className="mt-3 text-sm text-foreground">Couldn&apos;t load this surah.</p>
+              <p className="mt-3 text-sm text-foreground">Bu surani yuklab bo&apos;lmadi.</p>
               <p className="mt-1 text-xs text-muted-foreground">
-                Check your connection and try again.
+                Aloqangizni tekshirib, qaytadan urinib ko'ring.
               </p>
               <Button variant="outline" size="sm" onClick={() => refetch()} className="mt-4">
                 <RefreshCw className="mr-2 h-3.5 w-3.5" />
-                Retry
+                Qayta urinish
               </Button>
             </div>
           ) : (
             <div className="space-y-5">
               {verses.map((verse) => {
                 const verseNum = Number(verse.aya);
-                const isBookmarked = bookmarkedVerses.has(verseNum);
-                const isCurrentlyPlaying = playingVerse === verseNum && isPlaying;
+                const isBookmarked = bookmarks.includes(bookmarkKey(suraId, verseNum));
 
                 return (
                   <div
                     key={verse.id}
-                    className={`group rounded-2xl border p-7 transition-all duration-300 ${
-                      isCurrentlyPlaying
-                        ? 'bg-warm-glow border-warm/20 shadow-sm'
-                        : 'bg-card hover:shadow-sm'
-                    }`}
+                    className="group rounded-2xl border bg-card p-7 transition-all duration-300 hover:shadow-sm"
                   >
                     {/* Verse Number & Actions */}
                     <div className="mb-5 flex items-center justify-between">
                       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary text-xs font-semibold text-muted-foreground">
                         {verse.aya}
                       </div>
-                      <div className="flex items-center gap-0.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100 focus-within:opacity-100">
+                      <div className="flex items-center gap-0.5">
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 text-muted-foreground hover:text-warm"
-                          onClick={() => togglePlay(verseNum)}
-                          aria-label={isCurrentlyPlaying ? 'Pause' : 'Play'}
+                          className="h-8 w-8 text-muted-foreground"
+                          onClick={() => setTranslationSize((s) => Math.max(13, s - 1))}
+                          aria-label="Shrift o'lchamini kichraytirish"
                         >
-                          {isCurrentlyPlaying ? (
-                            <Pause className="h-3.5 w-3.5" />
-                          ) : (
-                            <Play className="h-3.5 w-3.5" />
-                          )}
+                          <Minus className="h-3.5 w-3.5" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className={`h-8 w-8 ${isBookmarked ? 'text-warm' : 'text-muted-foreground'}`}
-                          onClick={() => toggleBookmark(verseNum)}
-                          aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark'}
+                          className="h-8 w-8 text-muted-foreground"
+                          onClick={() => setTranslationSize((s) => Math.min(28, s + 1))}
+                          aria-label="Shrift o'lchamini kattalashtirish"
                         >
-                          {isBookmarked ? (
-                            <BookmarkCheck className="h-3.5 w-3.5" />
-                          ) : (
-                            <Bookmark className="h-3.5 w-3.5" />
-                          )}
+                          <Plus className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-muted-foreground"
+                          onClick={playAudio}
+                          aria-label="Audio"
+                        >
+                          <Volume2 className="h-3.5 w-3.5" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-muted-foreground"
                           onClick={() => copyVerse(verse)}
-                          aria-label="Copy verse"
+                          aria-label="Oyatni nusxa olish"
                         >
                           <Copy className="h-3.5 w-3.5" />
                         </Button>
@@ -307,28 +283,46 @@ const QuranReader = () => {
                           size="icon"
                           className="h-8 w-8 text-muted-foreground"
                           onClick={() => shareVerse(verse)}
-                          aria-label="Share verse"
+                          aria-label="Oyatni ulashish"
                         >
                           <Share2 className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className={`h-8 w-8 ${isBookmarked ? 'text-warm' : 'text-muted-foreground'}`}
+                          onClick={() => toggleBookmark(verseNum)}
+                          aria-label={isBookmarked ? "Xatcho'pni olib tashlash" : "Xatcho'p qilish"}
+                        >
+                          {isBookmarked ? (
+                            <BookmarkCheck className="h-3.5 w-3.5" />
+                          ) : (
+                            <Bookmark className="h-3.5 w-3.5" />
+                          )}
                         </Button>
                       </div>
                     </div>
 
-                    {/* Arabic — softer weight, smaller default size */}
+                    {/* Arabic — Uthmanic (Amiri Quran) font */}
                     <p
-                      className="font-arabic text-right leading-[2.2] text-muted-foreground/90"
+                      className="font-quran text-right leading-[2.4] text-foreground"
                       style={{ fontSize: `${arabicSize}px` }}
                     >
                       {verse.arabic_text}
                     </p>
 
-                    {/* Translation — primary surface */}
-                    <p
-                      className="mt-5 leading-[1.85] text-foreground"
-                      style={{ fontSize: `${translationSize}px` }}
-                    >
-                      {renderTranslation(verse.translation, script)}
-                    </p>
+                    {/* Тафсир label + translation */}
+                    <div className="mt-5">
+                      <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-warm">
+                        {script === 'cyrillic' ? 'Тафсир' : 'Tafsir'}
+                      </p>
+                      <p
+                        className="leading-[1.85] text-foreground"
+                        style={{ fontSize: `${translationSize}px` }}
+                      >
+                        {renderTranslation(verse.translation, script)}
+                      </p>
+                    </div>
 
                     {verse.footnotes && (
                       <p className="mt-3 border-l-2 border-warm/30 pl-3 text-xs leading-relaxed text-muted-foreground">
@@ -349,7 +343,7 @@ const QuranReader = () => {
               </Link>
             ) : (
               <Button variant="outline" disabled className="text-muted-foreground">
-                ← Previous
+                ← Oldingi
               </Button>
             )}
             {nextSuraId ? (
@@ -358,65 +352,26 @@ const QuranReader = () => {
               </Link>
             ) : (
               <Button variant="outline" disabled className="text-muted-foreground">
-                Next →
+                Keyingi →
               </Button>
             )}
           </div>
 
           {/* Attribution — required by quranenc.com terms */}
           <p className="mt-10 text-center text-[11px] text-muted-foreground">
-            Translation source:{' '}
+            Tarjima manbai:{' '}
             <a
               href="https://quranenc.com/en/browse/uzbek_moyassar"
               target="_blank"
               rel="noopener noreferrer"
               className="underline-offset-2 hover:underline"
             >
-              QuranEnc.com — Uzbek Translation of At-Tafsir Al-Muyassar
+              QuranEnc.com — At-Tafsir Al-Muyassar O'zbek Tarjimasi
             </a>
           </p>
         </div>
 
-        {/* Sticky Audio Player */}
-        <div className="fixed bottom-0 left-0 right-0 border-t bg-card/95 backdrop-blur-xl z-40">
-          <div className="container flex items-center justify-between py-3.5">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1.5">
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" aria-label="Previous verse">
-                  <SkipBack className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="warm"
-                  size="icon"
-                  className="h-10 w-10 rounded-full"
-                  onClick={() => setIsPlaying((p) => !p)}
-                  aria-label={isPlaying ? 'Pause' : 'Play'}
-                >
-                  {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-                </Button>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" aria-label="Next verse">
-                  <SkipForward className="h-3.5 w-3.5" />
-                </Button>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-foreground">{currentSurah.transliteration}</p>
-                <p className="text-[11px] text-muted-foreground">
-                  {isFetching ? 'Updating…' : 'Mishary Rashid Alafasy'}
-                </p>
-              </div>
-            </div>
-            <div className="hidden flex-1 items-center gap-3 px-10 md:flex">
-              <span className="text-[11px] tabular-nums text-muted-foreground">0:00</span>
-              <div className="h-1 flex-1 rounded-full bg-secondary">
-                <div className="h-1 w-0 rounded-full bg-warm transition-all" />
-              </div>
-              <span className="text-[11px] tabular-nums text-muted-foreground">3:45</span>
-            </div>
-            <Button variant="ghost" size="sm" className="text-muted-foreground" aria-label="Collapse player">
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
+
       </div>
     </Layout>
   );

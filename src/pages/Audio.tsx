@@ -8,14 +8,14 @@ import Layout from '@/components/layout/Layout';
 import { motion } from 'framer-motion';
 
 const reciters = [
-  { id: 1, name: 'Mishary Rashid Alafasy', riwayah: 'Hafs', style: 'Melodic', surahs: 114, popular: true },
-  { id: 2, name: 'Abdul Rahman Al-Sudais', riwayah: 'Hafs', style: 'Imam, Traditional', surahs: 114, popular: true },
-  { id: 3, name: 'Maher Al-Muaiqly', riwayah: 'Hafs', style: 'Clear, Calm', surahs: 114, popular: true },
-  { id: 4, name: 'Saad Al-Ghamdi', riwayah: 'Hafs', style: 'Powerful', surahs: 114, popular: false },
-  { id: 5, name: 'Hani Ar-Rifai', riwayah: 'Hafs', style: 'Emotional', surahs: 114, popular: false },
-  { id: 6, name: 'Yasser Al-Dosari', riwayah: 'Hafs', style: 'Gentle', surahs: 114, popular: true },
-  { id: 7, name: 'Ahmad Al-Ajmi', riwayah: 'Hafs', style: 'Unique', surahs: 114, popular: false },
-  { id: 8, name: 'Khalifa Al-Tunaiji', riwayah: 'Hafs', style: 'Tajweed-focused', surahs: 114, popular: false },
+  { id: 1, name: 'Mishary Rashid Alafasy', riwayah: 'Hafs', style: 'Ohangdor', surahs: 114, popular: true },
+  { id: 2, name: 'Abdul Rahman Al-Sudais', riwayah: 'Hafs', style: "Imam, An'anaviy", surahs: 114, popular: true },
+  { id: 3, name: 'Maher Al-Muaiqly', riwayah: 'Hafs', style: 'Aniq, Sokin', surahs: 114, popular: true },
+  { id: 4, name: 'Saad Al-Ghamdi', riwayah: 'Hafs', style: 'Kuchli', surahs: 114, popular: false },
+  { id: 5, name: 'Hani Ar-Rifai', riwayah: 'Hafs', style: 'Hissiy', surahs: 114, popular: false },
+  { id: 6, name: 'Yasser Al-Dosari', riwayah: 'Hafs', style: 'Yumshoq', surahs: 114, popular: true },
+  { id: 7, name: 'Ahmad Al-Ajmi', riwayah: 'Hafs', style: 'Noyob', surahs: 114, popular: false },
+  { id: 8, name: 'Khalifa Al-Tunaiji', riwayah: 'Hafs', style: "Tajvidga yo'naltirilgan", surahs: 114, popular: false },
 ];
 
 const fade = {
@@ -40,22 +40,22 @@ const Audio = () => {
     <Layout>
       <div className="container page-padding">
         <div className="mb-10">
-          <h1 className="text-foreground">Recitations</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Listen to the Quran recited by world-renowned reciters</p>
+          <h1 className="text-foreground">Qiroatlar</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Dunyoga mashhur qorilar tomonidan Qur'on qiroatlarini tinglang</p>
         </div>
 
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3 rounded-2xl border bg-card px-5 py-3 flex-1 max-w-md">
             <Search className="h-[18px] w-[18px] text-muted-foreground" />
             <input
-              type="text" placeholder="Search reciters…"
+              type="text" placeholder="Qorilarni qidirish…"
               value={query} onChange={e => setQuery(e.target.value)}
               className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
             />
           </div>
           <div className="flex gap-2">
-            <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>All</Button>
-            <Button variant={filter === 'popular' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('popular')}>Popular</Button>
+            <Button variant={filter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('all')}>Barchasi</Button>
+            <Button variant={filter === 'popular' ? 'default' : 'outline'} size="sm" onClick={() => setFilter('popular')}>Mashhur</Button>
           </div>
         </div>
 
@@ -68,7 +68,7 @@ const Audio = () => {
                     <Headphones className="h-5 w-5 text-warm" />
                   </div>
                   {r.popular && (
-                    <span className="rounded-lg bg-warm/10 px-2.5 py-1 text-[11px] font-semibold text-warm">Popular</span>
+                    <span className="rounded-lg bg-warm/10 px-2.5 py-1 text-[11px] font-semibold text-warm">Mashhur</span>
                   )}
                 </div>
                 <h3 className="mt-4 text-sm font-semibold text-foreground">{r.name}</h3>
@@ -77,10 +77,10 @@ const Audio = () => {
                   <span className="text-border">·</span>
                   <span>{r.style}</span>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">{r.surahs} surahs available</p>
+                <p className="mt-1 text-xs text-muted-foreground">{r.surahs} ta sura mavjud</p>
                 <div className="mt-5 flex gap-2.5">
                   <Button variant="warm" size="sm" className="flex-1 gap-1.5">
-                    <Play className="h-3 w-3" /> Listen
+                    <Play className="h-3 w-3" /> Tinglash
                   </Button>
                   <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground"><Download className="h-3.5 w-3.5" /></Button>
                 </div>

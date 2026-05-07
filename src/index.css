@@ -6,80 +6,90 @@
 
 @layer base {
   :root {
-    --background: 37 30% 94%;
-    --foreground: 24 30% 12%;
+    /* ── Islamic-inspired palette: deep emerald + warm gold ── */
+    --background: 46 30% 97%;        /* warm cream */
+    --foreground: 165 50% 9%;        /* deep dark emerald */
 
-    --card: 38 35% 97%;
-    --card-foreground: 24 30% 12%;
+    --card: 46 50% 99%;              /* near-white warm */
+    --card-foreground: 165 50% 9%;
 
-    --popover: 38 35% 97%;
-    --popover-foreground: 24 30% 12%;
+    --popover: 46 50% 99%;
+    --popover-foreground: 165 50% 9%;
 
-    --primary: 26 22% 28%;
-    --primary-foreground: 38 30% 97%;
+    --primary: 161 48% 22%;          /* rich deep emerald green */
+    --primary-foreground: 46 45% 97%;
 
-    --secondary: 35 28% 91%;
-    --secondary-foreground: 24 30% 12%;
+    --secondary: 161 20% 91%;        /* very light emerald tint */
+    --secondary-foreground: 165 50% 9%;
 
-    --muted: 34 22% 89%;
-    --muted-foreground: 28 10% 46%;
+    --muted: 161 12% 93%;
+    --muted-foreground: 161 14% 46%;
 
-    --accent: 75 8% 52%;
-    --accent-foreground: 24 30% 12%;
+    --accent: 38 80% 50%;            /* warm gold */
+    --accent-foreground: 165 50% 9%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 32 18% 86%;
-    --input: 32 18% 86%;
-    --ring: 26 22% 28%;
+    --border: 161 16% 88%;
+    --input: 161 16% 88%;
+    --ring: 161 48% 22%;
 
     --radius: 0.875rem;
 
-    --sidebar-background: 38 35% 97%;
-    --sidebar-foreground: 28 10% 46%;
-    --sidebar-primary: 26 22% 28%;
-    --sidebar-primary-foreground: 38 30% 97%;
-    --sidebar-accent: 35 28% 91%;
-    --sidebar-accent-foreground: 24 30% 12%;
-    --sidebar-border: 32 18% 86%;
-    --sidebar-ring: 26 22% 28%;
+    --sidebar-background: 46 50% 99%;
+    --sidebar-foreground: 161 14% 46%;
+    --sidebar-primary: 161 48% 22%;
+    --sidebar-primary-foreground: 46 45% 97%;
+    --sidebar-accent: 161 20% 91%;
+    --sidebar-accent-foreground: 165 50% 9%;
+    --sidebar-border: 161 16% 88%;
+    --sidebar-ring: 161 48% 22%;
 
-    /* Custom tokens */
-    --surface: 38 40% 98%;
-    --surface-contrast: 34 26% 89%;
-    --accent-warm: 27 24% 44%;
-    --accent-olive: 75 8% 52%;
-    --hover: 35 26% 93%;
-    --deep-accent: 24 24% 24%;
-    --warm-glow: 32 40% 95%;
+    /* ── Custom tokens ── */
+    --surface: 46 45% 98%;
+    --surface-contrast: 161 20% 94%;  /* light green-tinted section bg */
+    --accent-warm: 38 72% 46%;        /* warm gold */
+    --accent-olive: 161 28% 52%;
+    --hover: 161 18% 95%;
+    --deep-accent: 161 45% 17%;       /* very deep emerald */
+    --warm-glow: 38 65% 95%;          /* soft gold glow */
   }
 
   .dark {
-    --background: 24 18% 7%;
-    --foreground: 38 18% 90%;
-    --card: 24 16% 11%;
-    --card-foreground: 38 18% 90%;
-    --popover: 24 16% 11%;
-    --popover-foreground: 38 18% 90%;
-    --primary: 38 28% 82%;
-    --primary-foreground: 24 18% 7%;
-    --secondary: 24 14% 15%;
-    --secondary-foreground: 38 18% 90%;
-    --muted: 24 10% 17%;
-    --muted-foreground: 32 10% 52%;
-    --accent: 75 8% 38%;
-    --accent-foreground: 38 18% 90%;
-    --destructive: 0 62% 30%;
+    --background: 165 35% 6%;
+    --foreground: 46 28% 90%;
+
+    --card: 165 28% 9%;
+    --card-foreground: 46 28% 90%;
+
+    --popover: 165 28% 9%;
+    --popover-foreground: 46 28% 90%;
+
+    --primary: 44 70% 58%;            /* warm gold becomes primary in dark */
+    --primary-foreground: 165 40% 8%;
+
+    --secondary: 165 22% 14%;
+    --secondary-foreground: 46 28% 90%;
+
+    --muted: 165 18% 15%;
+    --muted-foreground: 165 12% 50%;
+
+    --accent: 38 55% 52%;
+    --accent-foreground: 46 28% 90%;
+
+    --destructive: 0 62% 38%;
     --destructive-foreground: 0 0% 100%;
-    --border: 24 10% 18%;
-    --input: 24 10% 18%;
-    --ring: 38 28% 82%;
-    --surface: 24 14% 9%;
-    --surface-contrast: 24 12% 13%;
-    --hover: 24 10% 15%;
-    --deep-accent: 38 22% 72%;
-    --warm-glow: 24 14% 12%;
+
+    --border: 165 18% 14%;
+    --input: 165 18% 14%;
+    --ring: 44 70% 58%;
+
+    --surface: 165 22% 8%;
+    --surface-contrast: 165 25% 11%;
+    --hover: 165 20% 13%;
+    --deep-accent: 44 65% 68%;
+    --warm-glow: 165 22% 11%;
   }
 }
 
@@ -111,10 +121,15 @@
 }
 
 @layer utilities {
+  /* Uthmanic script — Amiri Quran is specifically designed for Quranic text */
   .arabic-text {
-    font-family: 'Noto Naskh Arabic', 'Amiri', serif;
+    font-family: var(--font-quran), var(--font-amiri), serif;
     direction: rtl;
     line-height: 2.4;
+  }
+
+  .font-quran {
+    font-family: var(--font-quran), var(--font-amiri), serif;
   }
 
   .font-amiri {
@@ -122,8 +137,20 @@
   }
 
   .ornament-line {
-    background: linear-gradient(90deg, transparent, hsl(var(--border)), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--accent-warm) / 0.4), transparent);
     height: 1px;
+  }
+
+  /* Subtle geometric tiling pattern for hero/section backgrounds */
+  .geo-pattern {
+    background-image:
+      radial-gradient(circle at 1px 1px, hsl(var(--primary) / 0.06) 1px, transparent 0);
+    background-size: 28px 28px;
+  }
+
+  /* Ambient gradient glow for hero */
+  .hero-glow {
+    background: radial-gradient(ellipse 80% 50% at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 70%);
   }
 
   .section-padding {
@@ -135,11 +162,16 @@
   }
 
   .card-elevated {
-    @apply rounded-2xl border bg-card p-8 shadow-sm transition-shadow duration-300 hover:shadow-md;
+    @apply rounded-2xl border bg-card p-8 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
   }
 
   .card-flat {
     @apply rounded-2xl border bg-card p-6 transition-colors duration-200;
+  }
+
+  /* Thin gold accent bar — use above section headings */
+  .section-eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-warm;
   }
 
   .text-balance {

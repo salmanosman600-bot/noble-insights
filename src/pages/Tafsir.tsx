@@ -7,12 +7,12 @@ import Layout from '@/components/layout/Layout';
 import { motion } from 'framer-motion';
 
 const tafsirs = [
-  { id: 1, name: 'Tafsir Ibn Kathir', author: 'Ibn Kathir (d. 774 AH)', language: 'Arabic / English', style: 'Classical, Comprehensive', detailed: true, description: 'One of the most respected and widely used tafsirs, relying heavily on hadith and reports from the companions.' },
-  { id: 2, name: 'Tafsir al-Jalalayn', author: 'al-Mahalli & al-Suyuti', language: 'Arabic', style: 'Concise', detailed: false, description: 'A brief yet comprehensive commentary, ideal for quick reference and understanding of each verse.' },
-  { id: 3, name: 'Tafsir al-Sa\'di', author: 'Abdur-Rahman al-Sa\'di', language: 'Arabic / English', style: 'Modern, Accessible', detailed: true, description: 'Known for its clarity and ease of understanding, focusing on meanings and practical guidance.' },
-  { id: 4, name: 'Ma\'ariful Quran', author: 'Mufti Muhammad Shafi', language: 'Urdu / English', style: 'Scholarly, Practical', detailed: true, description: 'An 8-volume work that combines classical scholarship with contemporary relevance and Hanafi jurisprudence.' },
-  { id: 5, name: 'Fi Zilal al-Quran', author: 'Sayyid Qutb', language: 'Arabic', style: 'Literary, Reflective', detailed: true, description: 'A deeply personal and literary work, exploring the spiritual and social dimensions of each passage.' },
-  { id: 6, name: 'Tafsir al-Tabari', author: 'Ibn Jarir al-Tabari (d. 310 AH)', language: 'Arabic', style: 'Hadith-based, Encyclopedic', detailed: true, description: 'The earliest comprehensive tafsir, preserving vast chains of narration and scholarly opinions.' },
+  { id: 1, name: 'Tafsir Ibn Kathir', author: 'Ibn Kathir (d. 774 AH)', language: 'Arab / Ingliz', style: "Klassik, To'liq", detailed: true, description: "Sahobalar hadislari va rivoyatlariga asoslangan, eng obro'li va keng qo'llaniladigan tafsirlardan biri." },
+  { id: 2, name: 'Tafsir al-Jalalayn', author: 'al-Mahalli & al-Suyuti', language: 'Arab', style: 'Qisqa', detailed: false, description: "Har bir oyatni tezda ma'lumotnoma va tushunish uchun ideal bo'lgan qisqa, ammo to'liq sharh." },
+  { id: 3, name: "Tafsir al-Sa'di", author: "Abdur-Rahman al-Sa'di", language: 'Arab / Ingliz', style: 'Zamonaviy, Qulay', detailed: true, description: "Ma'nolar va amaliy ko'rsatmalarga e'tibor qaratgan holda oydinligi va tushunarliligi bilan mashhur." },
+  { id: 4, name: "Ma'ariful Quran", author: 'Mufti Muhammad Shafi', language: 'Urdu / Ingliz', style: 'Ilmiy, Amaliy', detailed: true, description: "Klassik ilm bilan zamonaviy dolzarblik va Hanafiy fiqhini birlashtiruvchi 8 jildlik asar." },
+  { id: 5, name: 'Fi Zilal al-Quran', author: 'Sayyid Qutb', language: 'Arab', style: 'Adabiy, Fikrlovchi', detailed: true, description: "Har bir parchaning ma'naviy va ijtimoiy o'lchamlarini o'rganuvchi, chuqur shaxsiy va adabiy asar." },
+  { id: 6, name: 'Tafsir al-Tabari', author: 'Ibn Jarir al-Tabari (d. 310 AH)', language: 'Arab', style: "Hadisga asoslangan, Ensiklopedik", detailed: true, description: "Keng rivoyat zanjirlarini va olimlik fikrlarini saqlovchi eng qadimgi to'liq tafsir." },
 ];
 
 const fade = {
@@ -34,14 +34,14 @@ const Tafsir = () => {
     <Layout>
       <div className="container page-padding">
         <div className="mb-10">
-          <h1 className="text-foreground">Tafsir Library</h1>
-          <p className="mt-2 text-sm text-muted-foreground">In-depth commentary and explanation of the Quran from classical and contemporary scholars</p>
+          <h1 className="text-foreground">Tafsir Kutubxonasi</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Klassik va zamonaviy olimlardan Qur'onning chuqur sharhi va tafsiri</p>
         </div>
 
         <div className="mb-10 flex items-center gap-3 rounded-2xl border bg-card px-5 py-3 max-w-md">
           <Search className="h-[18px] w-[18px] text-muted-foreground" />
           <input
-            type="text" placeholder="Search tafsir by name or author…"
+            type="text" placeholder="Tafsirni nom yoki muallif bo'yicha qidiring…"
             value={query} onChange={e => setQuery(e.target.value)}
             className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
           />
@@ -63,9 +63,9 @@ const Tafsir = () => {
                 <p className="mt-4 text-xs leading-[1.7] text-muted-foreground flex-1">{t.description}</p>
                 <div className="mt-5 flex items-center gap-2">
                   <span className="rounded-lg bg-secondary px-2.5 py-1 text-[11px] font-medium text-muted-foreground">{t.language}</span>
-                  <span className="rounded-lg bg-secondary px-2.5 py-1 text-[11px] font-medium text-muted-foreground">{t.detailed ? 'Detailed' : 'Concise'}</span>
+                  <span className="rounded-lg bg-secondary px-2.5 py-1 text-[11px] font-medium text-muted-foreground">{t.detailed ? 'Batafsil' : 'Qisqa'}</span>
                 </div>
-                <Button variant="outline" size="sm" className="mt-5 w-full">Read Tafsir</Button>
+                <Button variant="outline" size="sm" className="mt-5 w-full">Tafsirni O'qish</Button>
               </div>
             </motion.div>
           ))}

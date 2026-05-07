@@ -13,6 +13,7 @@ export const routes = {
   articles: '/articles',
   search: '/search',
   dashboard: '/dashboard',
+  bookmarks: '/bookmarks',
 } as const;
 
 // External API paths (relative to NEXT_PUBLIC_QURANENC_API_URL).

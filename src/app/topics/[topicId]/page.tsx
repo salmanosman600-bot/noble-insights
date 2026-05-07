@@ -1,6 +1,17 @@
 import type { Metadata } from 'next';
 import Topics from '@/pages/Topics';
 
+// Static export: pre-generate all known topic slugs so Next.js can produce
+// a static HTML file for each one at build time.
+const topicIds = [
+  'patience', 'mercy', 'tawhid', 'dua', 'paradise', 'repentance',
+  'family', 'knowledge', 'gratitude', 'justice', 'charity', 'prophets',
+];
+
+export function generateStaticParams() {
+  return topicIds.map((topicId) => ({ topicId }));
+}
+
 interface Props {
   params: Promise<{ topicId: string }>;
 }

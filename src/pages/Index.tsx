@@ -1,12 +1,12 @@
 'use client';
 
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Search, BookOpen, Languages, Headphones, BookMarked, ArrowRight, Star, Sparkles, Download, Smartphone } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import Layout from '@/components/layout/Layout';
+import { Button } from '@/components/ui/button';
 import { surahs } from '@/data/surahs';
 import { dailyVerse, featuredVerses } from '@/data/verses';
+import { motion } from 'framer-motion';
+import { ArrowRight, BookMarked, BookOpen, Download, Headphones, Languages, Search, Smartphone, Sparkles, Star } from 'lucide-react';
+import Link from 'next/link';
 
 const fade = {
   hidden: { opacity: 0, y: 20 },
@@ -23,43 +23,76 @@ const Index = () => {
     <Layout>
       {/* ── Hero ── */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-surface-contrast via-background to-background" />
-        <div className="container relative z-10 py-28 text-center lg:py-40">
-          <motion.p
-            className="font-arabic text-3xl text-warm md:text-4xl"
+        {/* Background layers */}
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.07] via-background to-background" />
+        <div className="absolute inset-0 geo-pattern" />
+        {/* Ambient glow orbs */}
+        <div className="pointer-events-none absolute -top-40 left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-primary/[0.06] blur-3xl animate-pulse-glow" />
+        <div className="pointer-events-none absolute top-32 -left-48 h-72 w-72 rounded-full bg-warm/[0.10] blur-3xl" />
+        <div className="pointer-events-none absolute top-48 -right-48 h-72 w-72 rounded-full bg-primary/[0.07] blur-3xl" />
+
+        <div className="container relative z-10 py-28 text-center lg:py-44">
+          {/* Eyebrow badge */}
+          <motion.div
+            className="mx-auto mb-10 flex w-fit items-center gap-3"
             initial="hidden" animate="visible" variants={fade} custom={0}
+          >
+            <div className="h-px w-14 bg-gradient-to-r from-transparent to-warm/60" />
+            <span className="section-eyebrow">Qur'oni Karim Platformasi</span>
+            <div className="h-px w-14 bg-gradient-to-l from-transparent to-warm/60" />
+          </motion.div>
+
+          {/* Bismillah */}
+          <motion.p
+            className="font-quran text-5xl text-primary md:text-6xl"
+            style={{ lineHeight: 1.9 }}
+            initial="hidden" animate="visible" variants={fade} custom={1}
           >
             بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
           </motion.p>
 
           <motion.h1
-            className="mx-auto mt-8 max-w-2xl text-balance text-foreground"
-            initial="hidden" animate="visible" variants={fade} custom={1}
+            className="mx-auto mt-7 max-w-2xl text-balance text-foreground"
+            initial="hidden" animate="visible" variants={fade} custom={2}
           >
-            A refined digital experience for the Noble Quran
+            Qur'oni Karim uchun nozik raqamli tajriba
           </motion.h1>
 
           <motion.p
             className="mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-muted-foreground text-pretty"
-            initial="hidden" animate="visible" variants={fade} custom={2}
+            initial="hidden" animate="visible" variants={fade} custom={3}
           >
-            Access Quran, translations, tafsir, recitations, and beneficial Islamic knowledge — all in one calm, beautiful platform.
+            Qur'on, tarjimalar, tafsir, qiroatlar va foydali islomiy bilimlar — hammasini bir sokin, go'zal platformada toping.
           </motion.p>
 
           {/* Search */}
-          <motion.div className="mx-auto mt-10 max-w-lg" initial="hidden" animate="visible" variants={fade} custom={3}>
-            <Link href="/search" className="flex items-center gap-3.5 rounded-2xl border bg-card px-6 py-4 shadow-sm transition-all duration-300 hover:shadow-md hover:border-warm/30">
-              <Search className="h-[18px] w-[18px] text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Search the Quran, translations, tafsir…</span>
+          <motion.div className="mx-auto mt-10 max-w-lg" initial="hidden" animate="visible" variants={fade} custom={4}>
+            <Link href="/search" className="flex items-center gap-3.5 rounded-2xl border border-primary/15 bg-card px-6 py-4 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/30 hover:bg-card">
+              <Search className="h-[18px] w-[18px] text-warm" />
+              <span className="text-sm text-muted-foreground">Qur'on, tarjimalar, tafsirni qidiring…</span>
             </Link>
           </motion.div>
 
           {/* CTAs */}
-          <motion.div className="mt-10 flex flex-wrap items-center justify-center gap-3" initial="hidden" animate="visible" variants={fade} custom={4}>
-            <Link href="/quran"><Button variant="hero" size="lg"><BookOpen className="h-4 w-4" /> Read Quran</Button></Link>
-            <Link href="/translations"><Button variant="hero-outline" size="lg"><Languages className="h-4 w-4" /> Translations</Button></Link>
-            <Link href="/audio"><Button variant="outline" size="lg"><Headphones className="h-4 w-4" /> Listen</Button></Link>
+          <motion.div className="mt-10 flex flex-wrap items-center justify-center gap-3" initial="hidden" animate="visible" variants={fade} custom={5}>
+            <Link href="/quran"><Button variant="hero" size="lg"><BookOpen className="h-4 w-4" /> Qur'on o'qish</Button></Link>
+            {/*
+            <Link href="/translations"><Button variant="hero-outline" size="lg"><Languages className="h-4 w-4" /> Tarjimalar</Button></Link>
+            <Link href="/audio"><Button variant="outline" size="lg"><Headphones className="h-4 w-4" /> Tinglash</Button></Link>
             <Link href="/tafsir"><Button variant="outline" size="lg"><BookMarked className="h-4 w-4" /> Tafsir</Button></Link>
+            */}
+          </motion.div>
+
+          {/* Stats bar */}
+          <motion.div
+            className="mt-14 flex items-center justify-center gap-6 text-[13px] text-muted-foreground"
+            initial="hidden" animate="visible" variants={fade} custom={6}
+          >
+            <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-primary/50" />114 Sura</span>
+            <span className="text-border">·</span>
+            <span>6 236 Oyat</span>
+            <span className="text-border">·</span>
+            <span>30 Juz</span>
           </motion.div>
         </div>
       </section>
@@ -67,17 +100,22 @@ const Index = () => {
       {/* ── Verse of the Day ── */}
       <section className="container section-padding">
         <motion.div
-          className="mx-auto max-w-2xl rounded-3xl border bg-card p-10 text-center md:p-14"
+          className="relative mx-auto max-w-2xl overflow-hidden rounded-3xl border border-primary/15 bg-card p-10 text-center shadow-sm md:p-14"
           initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={0}
         >
-          <div className="mb-5 flex items-center justify-center gap-2.5">
-            <Star className="h-4 w-4 text-warm" />
-            <span className="text-xs font-semibold uppercase tracking-[0.15em] text-warm">Verse of the Day</span>
+          {/* Soft glow bg */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/[0.04] via-transparent to-warm/[0.04]" />
+          <div className="relative z-10">
+            <div className="mb-5 flex items-center justify-center gap-2.5">
+              <Star className="h-4 w-4 text-warm" />
+              <span className="section-eyebrow">Kunning Oyati</span>
+              <Star className="h-4 w-4 text-warm" />
+            </div>
+            <p className="font-quran text-2xl text-foreground md:text-3xl" style={{ lineHeight: 2.2 }}>{dailyVerse.arabic}</p>
+            <div className="ornament-line mx-auto mt-6 mb-5 max-w-[120px]" />
+            <p className="text-sm leading-relaxed text-muted-foreground italic">{dailyVerse.translation}</p>
+            <p className="mt-3 text-xs text-warm/80 font-medium">— Baqara surasi, 2:286</p>
           </div>
-          <p className="font-arabic text-2xl leading-[2.2] text-foreground md:text-3xl">{dailyVerse.arabic}</p>
-          <div className="ornament-line mx-auto mt-6 mb-5 max-w-[120px]" />
-          <p className="text-sm leading-relaxed text-muted-foreground italic">{dailyVerse.translation}</p>
-          <p className="mt-3 text-xs text-muted-foreground/70">— Surah Al-Baqarah, 2:286</p>
         </motion.div>
       </section>
 
@@ -86,11 +124,12 @@ const Index = () => {
         <div className="container section-padding">
           <div className="flex items-end justify-between">
             <div>
-              <h2 className="text-foreground">Featured Surahs</h2>
-              <p className="mt-2 text-sm text-muted-foreground">Begin your journey with these beloved chapters</p>
+              <p className="section-eyebrow mb-2">Qur'on</p>
+              <h2 className="text-foreground">Taniqli Suralar</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Bu sevimli suralar bilan yo'lingizni boshlang</p>
             </div>
             <Link href="/surahs" className="hidden items-center gap-1.5 text-sm font-medium text-warm hover:text-warm/80 transition-colors sm:flex">
-              View All 114 <ArrowRight className="h-3.5 w-3.5" />
+              Barcha 114 ni ko'rish <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -98,20 +137,20 @@ const Index = () => {
               <motion.div key={surah.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={i}>
                 <Link
                   href={`/quran?surah=${surah.id}`}
-                  className="group flex items-center gap-5 rounded-2xl border bg-card p-6 transition-all duration-300 hover:shadow-md"
+                  className="group flex items-center gap-5 rounded-2xl border border-transparent bg-card p-6 transition-all duration-300 hover:shadow-md hover:border-primary/15 hover:-translate-y-0.5"
                 >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-secondary text-sm font-semibold text-muted-foreground">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-sm font-semibold text-primary">
                     {surah.id}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-3">
                       <span className="text-sm font-medium text-foreground">{surah.transliteration}</span>
-                      <span className="font-arabic text-base text-warm">{surah.name}</span>
+                      <span className="font-quran text-base text-warm">{surah.name}</span>
                     </div>
                     <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
                       <span>{surah.translation}</span>
                       <span className="text-border">·</span>
-                      <span>{surah.totalVerses} verses</span>
+                      <span>{surah.totalVerses} oyat</span>
                     </div>
                   </div>
                 </Link>
@@ -122,11 +161,12 @@ const Index = () => {
       </section>
 
       {/* ── Continue Reading ── */}
+      {/*
       <section className="container section-padding">
         <div className="flex items-end justify-between">
           <div>
-            <h2 className="text-foreground">Continue Reading</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Pick up where you left off</p>
+            <h2 className="text-foreground">O'qishni Davom Ettirish</h2>
+            <p className="mt-2 text-sm text-muted-foreground">To'xtatgan joyingizdan davom eting</p>
           </div>
         </div>
         <motion.div
@@ -139,41 +179,43 @@ const Index = () => {
                 <BookOpen className="h-6 w-6 text-warm" />
               </div>
               <div>
-                <h3 className="text-base font-medium text-foreground">Surah Al-Kahf</h3>
-                <p className="mt-0.5 text-sm text-muted-foreground">Verse 45 of 110</p>
+                <h3 className="text-base font-medium text-foreground">Al-Kahf Surasi</h3>
+                <p className="mt-0.5 text-sm text-muted-foreground">110 dan 45-oyat</p>
                 <div className="mt-2.5 h-1.5 w-48 rounded-full bg-secondary">
                   <div className="h-1.5 w-[41%] rounded-full bg-warm transition-all" />
                 </div>
               </div>
             </div>
             <Link href="/quran?surah=18">
-              <Button variant="warm">Resume Reading</Button>
+              <Button variant="warm">O'qishni Davom Ettirish</Button>
             </Link>
           </div>
         </motion.div>
       </section>
+      */}
 
       {/* ── Reflections ── */}
       <section className="bg-surface-contrast">
         <div className="container section-padding">
           <div className="flex items-end justify-between">
             <div>
-              <h2 className="text-foreground">Reflections & Reminders</h2>
-              <p className="mt-2 text-sm text-muted-foreground">Powerful verses for contemplation</p>
+              <p className="section-eyebrow mb-2">Tafakkur</p>
+              <h2 className="text-foreground">Fikrlar va Eslatmalar</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Tafakkur uchun kuchli oyatlar</p>
             </div>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {featuredVerses.map((verse, i) => (
               <motion.div
                 key={verse.id}
-                className="rounded-2xl border bg-card p-8 transition-shadow duration-300 hover:shadow-md"
+                className="rounded-2xl border border-transparent bg-card p-8 transition-all duration-300 hover:shadow-md hover:border-primary/15 hover:-translate-y-0.5"
                 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={i}
               >
-                <p className="font-arabic text-lg leading-[2.2] text-foreground">{verse.arabic}</p>
+                <p className="font-quran text-lg text-foreground" style={{ lineHeight: 2.2 }}>{verse.arabic}</p>
                 <div className="ornament-line my-5" />
                 <p className="text-sm leading-relaxed text-muted-foreground italic">{verse.translation}</p>
-                <p className="mt-3 text-xs text-warm">
-                  Surah {surahs[verse.surahId - 1]?.transliteration}, {verse.surahId}:{verse.verseNumber}
+                <p className="mt-3 text-xs font-medium text-warm">
+                  Sura {surahs[verse.surahId - 1]?.transliteration}, {verse.surahId}:{verse.verseNumber}
                 </p>
               </motion.div>
             ))}
@@ -182,113 +224,68 @@ const Index = () => {
       </section>
 
       {/* ── Explore Grid ── */}
+      {/*
       <section className="container section-padding">
-        <h2 className="text-foreground">Explore</h2>
-        <p className="mt-2 text-sm text-muted-foreground">Discover the depth of the Quran</p>
+        <p className="section-eyebrow mb-2">Imkoniyatlar</p>
+        <h2 className="text-foreground">Ko'rish</h2>
+        <p className="mt-2 text-sm text-muted-foreground">Qur'onning chuqurligini kashf eting</p>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: BookOpen, title: 'Read Quran', desc: 'Beautiful verse-by-verse reading experience with multiple translations', path: '/quran' },
-            { icon: Languages, title: 'Translations', desc: 'Scholarly translations across many languages and styles', path: '/translations' },
-            { icon: BookMarked, title: 'Tafsir', desc: 'In-depth commentary and explanation from classical scholars', path: '/tafsir' },
-            { icon: Headphones, title: 'Recitations', desc: 'Listen to beautiful Quran recitations by world-renowned reciters', path: '/audio' },
+            { icon: BookOpen, title: "Qur'on o'qish", desc: "Ko'p tarjimali oyat-oyat o'qish tajribasi", path: '/quran' },
+            { icon: Languages, title: 'Tarjimalar', desc: "Ko'p tillar va usullardagi ilmiy tarjimalar", path: '/translations' },
+            { icon: BookMarked, title: 'Tafsir', desc: "Klassik olimlardan chuqur sharh va tafsir", path: '/tafsir' },
+            { icon: Headphones, title: 'Qiroatlar', desc: "Dunyoga mashhur qori tomonidan go'zal Qur'on qiroatlarini tinglang", path: '/audio' },
           ].map((item, i) => (
             <motion.div key={item.path} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={i}>
-              <Link href={item.path} className="group flex flex-col items-start rounded-2xl border bg-card p-8 transition-all duration-300 hover:shadow-md">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary">
-                  <item.icon className="h-5 w-5 text-warm" />
+              <Link href={item.path} className="group flex flex-col items-start rounded-2xl border border-transparent bg-card p-8 transition-all duration-300 hover:shadow-md hover:border-primary/15 hover:-translate-y-0.5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/10">
+                  <item.icon className="h-5 w-5 text-primary" />
                 </div>
                 <h3 className="mt-5 text-[15px] font-semibold text-foreground">{item.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
                 <span className="mt-4 flex items-center gap-1 text-xs font-medium text-warm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  Explore <ArrowRight className="h-3 w-3" />
+                  Ko'rish <ArrowRight className="h-3 w-3" />
                 </span>
               </Link>
             </motion.div>
           ))}
         </div>
       </section>
+      */}
 
       {/* ── Topics ── */}
+      {/*
       <section className="bg-surface-contrast">
         <div className="container section-padding">
           <div className="flex items-end justify-between">
             <div>
-              <h2 className="text-foreground">Quran by Topics</h2>
-              <p className="mt-2 text-sm text-muted-foreground">Discover verses organized by theme</p>
+              <p className="section-eyebrow mb-2">Mavzuli</p>
+              <h2 className="text-foreground">Mavzular bo'yicha Qur'on</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Mavzu bo'yicha tartibga solingan oyatlarni kashf eting</p>
             </div>
-            <Link href="/topics" className="hidden items-center gap-1.5 text-sm font-medium text-warm hover:text-warm/80 transition-colors sm:flex">
-              All Topics <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+            <Link href="/topics">Barcha Mavzular</Link>
           </div>
-          <div className="mt-10 flex flex-wrap gap-3">
-            {[
-              { ar: 'الصبر', en: 'Patience' },
-              { ar: 'الرحمة', en: 'Mercy' },
-              { ar: 'التوحيد', en: 'Monotheism' },
-              { ar: 'الدعاء', en: 'Supplication' },
-              { ar: 'الجنة', en: 'Paradise' },
-              { ar: 'التوبة', en: 'Repentance' },
-              { ar: 'العلم', en: 'Knowledge' },
-              { ar: 'الشكر', en: 'Gratitude' },
-            ].map((topic) => (
-              <Link
-                key={topic.en}
-                href={`/topics/${topic.en.toLowerCase()}`}
-                className="flex items-center gap-3 rounded-2xl border bg-card px-6 py-4 transition-all duration-300 hover:shadow-md"
-              >
-                <span className="font-arabic text-lg text-warm">{topic.ar}</span>
-                <span className="text-sm font-medium text-foreground">{topic.en}</span>
-              </Link>
-            ))}
-          </div>
+          ...
         </div>
       </section>
+      */}
 
       {/* ── Download / Resources ── */}
+      {/*
       <section className="container section-padding">
-        <div className="grid gap-6 md:grid-cols-2">
-          <motion.div className="rounded-2xl border bg-card p-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={0}>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary">
-              <Download className="h-5 w-5 text-warm" />
-            </div>
-            <h3 className="mt-5 text-lg font-semibold text-foreground">Download Resources</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Access downloadable PDFs of Quran translations, tafsir books, and reading guides for offline study.</p>
-            <Button variant="outline" className="mt-6">Browse Downloads</Button>
-          </motion.div>
-          <motion.div className="rounded-2xl border bg-card p-10" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={1}>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary">
-              <Smartphone className="h-5 w-5 text-warm" />
-            </div>
-            <h3 className="mt-5 text-lg font-semibold text-foreground">Mobile App</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Take Noor with you everywhere. A calm, focused Quran reading experience designed for mobile.</p>
-            <Button variant="outline" className="mt-6">Coming Soon</Button>
-          </motion.div>
-        </div>
+        ...
       </section>
+      */}
 
       {/* ── Newsletter ── */}
+      {/*
       <section className="bg-surface-contrast">
-        <div className="container section-padding">
-          <motion.div
-            className="mx-auto max-w-lg rounded-3xl border bg-card p-10 text-center md:p-14"
-            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fade} custom={0}
-          >
-            <Sparkles className="mx-auto h-5 w-5 text-warm" />
-            <h2 className="mt-4 text-xl font-semibold text-foreground">Stay Connected</h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">Receive a daily verse and beneficial reminders in your inbox.</p>
-            <div className="mt-8 flex gap-2.5">
-              <input
-                type="email"
-                placeholder="your@email.com"
-                className="flex-1 rounded-xl border bg-background px-5 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-              <Button variant="warm">Subscribe</Button>
-            </div>
-          </motion.div>
-        </div>
+        ...
       </section>
+      */}
     </Layout>
   );
 };
 
 export default Index;
+
