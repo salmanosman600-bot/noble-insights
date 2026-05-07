@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans, Amiri, Amiri_Quran } from 'next/font/google';
+import { Plus_Jakarta_Sans, Amiri, Amiri_Quran, Scheherazade_New } from 'next/font/google';
 import Providers from '@/shared/components/providers';
 import '@/index.css';
 
@@ -23,6 +23,14 @@ const amiriQuran = Amiri_Quran({
   subsets: ['arabic'],
   weight: ['400'],
   variable: '--font-quran',
+  display: 'swap',
+});
+
+// Scheherazade New — elegant Arabic display font (closest to Thuluth on Google Fonts)
+const scheherazade = Scheherazade_New({
+  subsets: ['arabic'],
+  weight: ['400', '700'],
+  variable: '--font-thuluth',
   display: 'swap',
 });
 
@@ -75,7 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="uz"
-      className={`${plusJakartaSans.variable} ${amiri.variable} ${amiriQuran.variable}`}
+      className={`${plusJakartaSans.variable} ${amiri.variable} ${amiriQuran.variable} ${scheherazade.variable}`}
       suppressHydrationWarning
     >
       <body className={plusJakartaSans.className}>

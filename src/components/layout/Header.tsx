@@ -1,23 +1,19 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import ThemeToggle from '@/components/ThemeToggle';
 import { useScriptStore } from '@/features/quran/store/script.store';
 import { cn } from '@/lib/utils';
-import { Bookmark, Languages, Menu, Search, X } from 'lucide-react';
+import { Languages, Menu, Search, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 const navLinks = [
   { label: 'Bosh sahifa', path: '/' },
-  { label: "Qur'on", path: '/quran' },
   { label: 'Suralar', path: '/surahs' },
   { label: "Xatcho'plar", path: '/bookmarks' },
-  // { label: 'Tarjimalar', path: '/translations' },
-  // { label: 'Tafsir', path: '/tafsir' },
-  // { label: 'Audio', path: '/audio' },
-  // { label: 'Mavzular', path: '/topics' },
-  // { label: 'Maqolalar', path: '/articles' },
+  { label: 'Biz haqimizda', path: '/about' },
 ];
 
 const Header = () => {
@@ -74,11 +70,7 @@ const Header = () => {
               <Search className="h-[18px] w-[18px]" />
             </Button>
           </Link>
-          <Link href="/bookmarks" aria-label="Xatcho'plar" className="hidden sm:block">
-            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground" tabIndex={-1} aria-hidden="true">
-              <Bookmark className="h-[18px] w-[18px]" />
-            </Button>
-          </Link>
+          <ThemeToggle />
           {/*
           <Link href="/dashboard" aria-label="Mening Kabinetim" className="hidden sm:block">
             <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground" tabIndex={-1} aria-hidden="true">

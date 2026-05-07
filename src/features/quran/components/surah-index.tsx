@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import Layout from '@/components/layout/Layout';
 import { surahs } from '../data/surahs';
 import { routes } from '@/config/routes';
+import { useTranslit } from '../hooks/use-translit';
 
 type FilterType = 'all' | 'Makki' | 'Madani';
 type SortMode = 'mushaf' | 'revelation';
@@ -23,6 +24,7 @@ const fade = {
 };
 
 const SurahIndex = () => {
+  const translit = useTranslit();
   const [query, setQuery] = useState('');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [filterType, setFilterType] = useState<FilterType>('all');
@@ -36,6 +38,7 @@ const SurahIndex = () => {
       result = result.filter(
         (s) =>
           s.transliteration.toLowerCase().includes(q) ||
+          s.translationUz.toLowerCase().includes(q) ||
           s.translation.toLowerCase().includes(q) ||
           s.name.includes(q) ||
           s.id.toString() === q,
@@ -126,19 +129,8 @@ const SurahIndex = () => {
                   {surah.id}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="text-sm font-medium text-foreground">{surah.transliteration}</span>
-                    <span className="font-arabic text-sm text-warm">{surah.name}</span>
-                  </div>
-                  <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-                    <span>{surah.translation}</span>
-                    <span className="text-border">·</span>
-                    <span>{surah.totalVerses} oyat</span>
-                    <span className="text-border">·</span>
-                    <span className={surah.type === 'Makki' ? 'text-olive' : 'text-warm'}>
-                      {surah.type}
-                    </span>
-                  </div>
+                  <span className="block text-sm font-medium text-foreground">{translit(surah.translationUz)}</span>
+                  <span className="block text-xs text-muted-foreground">{surah.totalVerses} oyat</span>
                 </div>
               </Link>
             </motion.div>

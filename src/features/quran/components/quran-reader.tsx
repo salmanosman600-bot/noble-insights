@@ -305,7 +305,7 @@ const QuranReader = () => {
 
                     {/* Arabic — Uthmanic (Amiri Quran) font */}
                     <p
-                      className="font-quran text-right leading-[2.4] text-foreground"
+                      className="font-quran text-center leading-[2.4] text-foreground"
                       style={{ fontSize: `${arabicSize}px` }}
                     >
                       {verse.arabic_text}
@@ -357,18 +357,6 @@ const QuranReader = () => {
             )}
           </div>
 
-          {/* Attribution — required by quranenc.com terms */}
-          <p className="mt-10 text-center text-[11px] text-muted-foreground">
-            Tarjima manbai:{' '}
-            <a
-              href="https://quranenc.com/en/browse/uzbek_moyassar"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline-offset-2 hover:underline"
-            >
-              QuranEnc.com — At-Tafsir Al-Muyassar O'zbek Tarjimasi
-            </a>
-          </p>
         </div>
 
 
