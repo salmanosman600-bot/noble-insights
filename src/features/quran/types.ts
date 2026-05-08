@@ -99,7 +99,7 @@ export interface QcfVerse {
 
 export interface QcfVersesResponse {
   verses: QcfVerse[];
-  meta: {
+  pagination: {
     total_count: number;
     current_page: number;
     next_page: number | null;

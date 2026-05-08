@@ -17,11 +17,11 @@ export const mushafService = {
     const first = await fetchPage(chapter, 1);
     const all: QcfVerse[] = [...first.verses];
 
-    let nextPage = first.meta.next_page;
+    let nextPage = first.pagination.next_page;
     while (nextPage !== null) {
       const resp = await fetchPage(chapter, nextPage);
       all.push(...resp.verses);
-      nextPage = resp.meta.next_page;
+      nextPage = resp.pagination.next_page;
     }
 
     return all;

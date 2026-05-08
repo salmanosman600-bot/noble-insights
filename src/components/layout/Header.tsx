@@ -12,7 +12,6 @@ import { useState } from 'react';
 const navLinks = [
   { label: 'Bosh sahifa', path: '/' },
   { label: 'Suralar', path: '/surahs' },
-  { label: 'Mushaf', path: '/mushaf' },
   { label: "Xatcho'plar", path: '/bookmarks' },
   { label: 'Biz haqimizda', path: '/about' },
 ];

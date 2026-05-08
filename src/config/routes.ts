@@ -20,11 +20,11 @@ export const routes = {
 
 // External API paths (relative to NEXT_PUBLIC_QURANENC_API_URL).
 export const apiRoutes = {
-  // qurancdn.com — Quran Foundation public API, CORS *, no key required.
+  // api.quran.com v4 — Quran Foundation public API, CORS *, no key required.
   // Provides QCF V2 `code_v2` PUA glyphs and `page_number` per word.
   // Required for QCF V2 per-page font rendering (cannot use Unicode text).
   qurancdn: {
-    baseUrl: 'https://api.qurancdn.com/api/qdc' as const,
+    baseUrl: 'https://api.quran.com/api/v4' as const,
     versesByChapter: (chapter: number, page: number) =>
       `/verses/by_chapter/${chapter}?words=true&word_fields=code_v2%2Cpage_number&per_page=50&page=${page}`,
   },

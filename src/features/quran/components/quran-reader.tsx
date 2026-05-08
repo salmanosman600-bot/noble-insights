@@ -23,9 +23,11 @@ import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useSuraTranslation } from '../hooks/use-sura-translation';
 import { useUthmaniSura } from '../hooks/use-uthmani-sura';
+import { useMushafSura } from '../hooks/use-mushaf-sura';
+import { useQcfFonts } from '../hooks/use-qcf-fonts';
 import { useBookmarkStore, bookmarkKey } from '../store/bookmark.store';
 import { useScriptStore } from '../store/script.store';
-import { DEFAULT_TRANSLATION_KEY, type Aya, type Script } from '../types';
+import { DEFAULT_TRANSLATION_KEY, type Aya, type Script, type QcfWord } from '../types';
 import { transliterateUzbekToLatin } from '../utils/transliterate';
 
 // Translation-prominent reader: Uzbek translation is the primary surface;
@@ -40,6 +42,8 @@ const clampSuraId = (raw: string | null): number => {
 
 const renderTranslation = (text: string, script: Script) =>
   script === 'latin' ? transliterateUzbekToLatin(text) : text;
+
+const surahNameGlyph = (id: number) => String.fromCharCode(0xe900 + id - 1);
 
 const QuranReader = () => {
   const searchParams = useSearchParams();
@@ -58,6 +62,8 @@ const QuranReader = () => {
     currentSurah.id,
   );
   const { data: uthmaniData } = useUthmaniSura(currentSurah.id);
+  const { data: qcfVerses } = useMushafSura(currentSurah.id);
+  useQcfFonts(qcfVerses);
 
   const verses = useMemo<Aya[]>(() => data?.result ?? [], [data]);
 
@@ -68,8 +74,12 @@ const QuranReader = () => {
     return map;
   }, [uthmaniData]);
 
-  // Prefer the Mushaf-style name from alquran.cloud (fully voweled); fallback to local data.
-  const surahArabicName = uthmaniData?.data.name ?? currentSurah.name;
+  // Map verse_number → QCF V2 words for O(1) lookup per verse.
+  const qcfWordMap = useMemo<Map<number, QcfWord[]>>(() => {
+    const map = new Map<number, QcfWord[]>();
+    qcfVerses?.forEach((v) => map.set(v.verse_number, v.words));
+    return map;
+  }, [qcfVerses]);
 
   const toggleBookmark = useCallback((verseNum: number) => {
     const was = bookmarks.includes(bookmarkKey(suraId, verseNum));
@@ -129,7 +139,13 @@ const QuranReader = () => {
                   {currentSurah.translation} · {currentSurah.totalVerses} oyat · {currentSurah.type}
                 </p>
               </div>
-              <span className="font-hafs text-xl text-warm">{surahArabicName}</span>
+              <span
+                className="font-surah-names leading-none text-warm"
+                style={{ fontSize: 40 }}
+                aria-label={currentSurah.transliteration}
+              >
+                {surahNameGlyph(suraId)}
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <Button
@@ -203,11 +219,15 @@ const QuranReader = () => {
           )}
         </div>
 
-        {/* Bismillah */}
+        {/* Bismillah — decorative QCF glyph (\uE001) */}
         {currentSurah.id !== 1 && currentSurah.id !== 9 && (
           <div className="container py-12 text-center">
-            <p className="font-hafs text-3xl text-warm leading-loose">
-              بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+            <p
+              className="font-bismillah leading-none text-foreground"
+              style={{ fontSize: 52 }}
+              aria-label="Bismillahir rohmanir rohiym"
+            >
+              {''}
             </p>
           </div>
         )}
@@ -315,13 +335,30 @@ const QuranReader = () => {
                       </div>
                     </div>
 
-                    {/* Arabic — KFGQPC UthmanicHafs, Madinah Mushaf script */}
-                    <p
-                      className="quran-text font-hafs text-center text-foreground"
-                      style={{ fontSize: `${arabicSize}px` }}
-                    >
-                      {uthmaniTextMap.get(Number(verse.aya)) ?? verse.arabic_text}
-                    </p>
+                    {/* Arabic — QCF V2 per-word glyphs; falls back to Uthmani Unicode */}
+                    {qcfWordMap.has(verseNum) ? (
+                      <div
+                        dir="rtl"
+                        className="flex flex-wrap items-baseline justify-center gap-x-[1px] text-foreground"
+                        style={{ lineHeight: 2.8, fontSize: `${arabicSize}px` }}
+                      >
+                        {qcfWordMap.get(verseNum)!.map((word) => (
+                          <span
+                            key={word.id}
+                            style={{ fontFamily: `'p${word.page_number}-v2'` }}
+                          >
+                            {word.code_v2}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p
+                        className="quran-text font-hafs text-center text-foreground"
+                        style={{ fontSize: `${arabicSize}px` }}
+                      >
+                        {uthmaniTextMap.get(verseNum) ?? verse.arabic_text}
+                      </p>
+                    )}
 
                     {/* Тафсир label + translation */}
                     <div className="mt-5">
