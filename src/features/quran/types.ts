@@ -34,3 +34,36 @@ export type Script = 'cyrillic' | 'latin';
 // Default translation for the Uzbek-first reading experience. Other Uzbek
 // translations available: `uzbek_rwwad`, `uzbek_mansour`.
 export const DEFAULT_TRANSLATION_KEY = 'uzbek_moyassar';
+
+// ── alquran.cloud Uthmani-script types ──────────────────────────────────────
+// Source: https://api.alquran.cloud/v1/surah/{n}/quran-uthmani
+// Returns the Uthmani script exactly as typeset in the official Madinah Mushaf.
+
+export interface UthmaniAya {
+  number: number;
+  text: string;
+  numberInSurah: number;
+  juz: number;
+  manzil: number;
+  page: number;
+  ruku: number;
+  hizbQuarter: number;
+  sajda: boolean;
+}
+
+export interface UthmaniSurah {
+  number: number;
+  /** Arabic name with full Mushaf-style voweling, e.g. "سُورَةُ ٱلْفَاتِحَةِ" */
+  name: string;
+  englishName: string;
+  englishNameTranslation: string;
+  numberOfAyahs: number;
+  revelationType: string;
+  ayahs: UthmaniAya[];
+}
+
+export interface UthmaniSurahResponse {
+  code: number;
+  status: string;
+  data: UthmaniSurah;
+}

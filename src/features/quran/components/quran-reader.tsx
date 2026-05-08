@@ -22,6 +22,7 @@ import { useSearchParams } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useSuraTranslation } from '../hooks/use-sura-translation';
+import { useUthmaniSura } from '../hooks/use-uthmani-sura';
 import { useBookmarkStore, bookmarkKey } from '../store/bookmark.store';
 import { useScriptStore } from '../store/script.store';
 import { DEFAULT_TRANSLATION_KEY, type Aya, type Script } from '../types';
@@ -56,8 +57,19 @@ const QuranReader = () => {
     DEFAULT_TRANSLATION_KEY,
     currentSurah.id,
   );
+  const { data: uthmaniData } = useUthmaniSura(currentSurah.id);
 
   const verses = useMemo<Aya[]>(() => data?.result ?? [], [data]);
+
+  // Map numberInSurah → Uthmani text for O(1) lookup per verse.
+  const uthmaniTextMap = useMemo<Map<number, string>>(() => {
+    const map = new Map<number, string>();
+    uthmaniData?.data.ayahs.forEach((a) => map.set(a.numberInSurah, a.text));
+    return map;
+  }, [uthmaniData]);
+
+  // Prefer the Mushaf-style name from alquran.cloud (fully voweled); fallback to local data.
+  const surahArabicName = uthmaniData?.data.name ?? currentSurah.name;
 
   const toggleBookmark = useCallback((verseNum: number) => {
     const was = bookmarks.includes(bookmarkKey(suraId, verseNum));
@@ -117,7 +129,7 @@ const QuranReader = () => {
                   {currentSurah.translation} · {currentSurah.totalVerses} oyat · {currentSurah.type}
                 </p>
               </div>
-              <span className="font-hafs text-xl text-warm">{currentSurah.name}</span>
+              <span className="font-hafs text-xl text-warm">{surahArabicName}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Button
@@ -303,12 +315,12 @@ const QuranReader = () => {
                       </div>
                     </div>
 
-                    {/* Arabic — Uthmanic (Amiri Quran) font */}
+                    {/* Arabic — KFGQPC UthmanicHafs, Madinah Mushaf script */}
                     <p
-                      className="font-hafs text-center leading-[2.4] text-foreground"
+                      className="quran-text font-hafs text-center text-foreground"
                       style={{ fontSize: `${arabicSize}px` }}
                     >
-                      {verse.arabic_text}
+                      {uthmaniTextMap.get(Number(verse.aya)) ?? verse.arabic_text}
                     </p>
 
                     {/* Тафсир label + translation */}

@@ -18,6 +18,12 @@ export const routes = {
 
 // External API paths (relative to NEXT_PUBLIC_QURANENC_API_URL).
 export const apiRoutes = {
+  // alquran.cloud — free public API, CORS *, no key required.
+  // Provides Uthmani-script text identical to the printed Madinah Mushaf.
+  alquranCloud: {
+    baseUrl: 'https://api.alquran.cloud/v1' as const,
+    uthmaniSura: (suraNumber: number) => `/surah/${suraNumber}/quran-uthmani`,
+  },
   quranenc: {
     translationsList: (lang?: string) =>
       lang ? `/translations/list/${lang}/` : '/translations/list/',

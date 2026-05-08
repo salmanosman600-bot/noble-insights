@@ -9,5 +9,8 @@ export const QUERY_KEYS = {
       ['quran', 'sura', translationKey, suraNumber] as const,
     aya: (translationKey: string, suraNumber: number, ayaNumber: number) =>
       ['quran', 'aya', translationKey, suraNumber, ayaNumber] as const,
+    // Uthmani Arabic text from alquran.cloud — separate from translation cache.
+    uthmaniSura: (suraNumber: number) =>
+      ['quran', 'uthmani-sura', suraNumber] as const,
   },
 } as const;

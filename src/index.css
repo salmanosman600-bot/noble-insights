@@ -5,16 +5,23 @@
  * from King Fahd Quran Printing Complex (qurancomplex.gov.sa). Free to use.
  * Works with standard Unicode Quran text (Hafs ʿan ʿĀṣim).
  */
+/*
+ * Primary CDN: verses.quran.foundation (Quran Foundation — fast, reliable, CORS *).
+ * Fallback:    qurancomplex.gov.sa (official KFGQPC host).
+ * Local:       system copy if the user already has the font installed.
+ */
 @font-face {
   font-family: 'QCF Hafs';
   src:
     local('KFGQPC Uthmanic Script HAFS'),
     local('UthmanicHafs_v20'),
+    url('https://verses.quran.foundation/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2') format('woff2'),
     url('https://fonts.qurancomplex.gov.sa/wp-content/uploads/2020/01/UthmanicHafs1Ver18.woff2') format('woff2'),
     url('https://fonts.qurancomplex.gov.sa/wp-content/uploads/2020/01/UthmanicHafs1Ver18.woff') format('woff');
   font-display: swap;
   font-weight: 400;
   font-style: normal;
+  unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF;
 }
 
 @tailwind base;
@@ -143,6 +150,15 @@
     font-family: var(--font-quran), var(--font-amiri), serif;
     direction: rtl;
     line-height: 2.4;
+  }
+
+  /* KFGQPC UthmanicHafs — Madinah Mushaf-identical rendering */
+  .quran-text {
+    font-family: 'QCF Hafs', 'KFGQPC Uthmanic Script HAFS', var(--font-amiri), serif;
+    direction: rtl;
+    line-height: 2.4;
+    font-feature-settings: normal;
+    letter-spacing: 0;
   }
 
   .font-quran {
