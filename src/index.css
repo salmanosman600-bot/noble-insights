@@ -1,6 +1,29 @@
 /* Fonts loaded via next/font/google in app/layout.tsx (zero render-blocking) */
 
 /*
+ * QCF official surah-name banner glyphs (quran.com CDN).
+ * Surah N → String.fromCharCode(0xE900 + N - 1).  Surah 1 = \uE900, etc.
+ */
+@font-face {
+  font-family: 'surah-names';
+  src: url('https://quran.com/fonts/quran/surah-names/v1/sura_names.woff2') format('woff2');
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*
+ * Single decorative Bismillah glyph.  Render with character \uE001.
+ */
+@font-face {
+  font-family: 'bismillah';
+  src: url('https://verses.quran.foundation/fonts/quran/hafs/bismillah/bismillah.woff2') format('woff2');
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*
  * KFGQPC Uthmanic Script Hafs — the official Unicode Mushaf Al-Madinah font
  * from King Fahd Quran Printing Complex (qurancomplex.gov.sa). Free to use.
  * Works with standard Unicode Quran text (Hafs ʿan ʿĀṣim).
@@ -167,6 +190,20 @@
 
   .font-amiri {
     font-family: 'Amiri', serif;
+  }
+
+  /* QCF surah-name banner glyph */
+  .font-surah-names {
+    font-family: 'surah-names', serif;
+    font-size: inherit;
+    line-height: 1;
+  }
+
+  /* QCF decorative Bismillah glyph */
+  .font-bismillah {
+    font-family: 'bismillah', serif;
+    font-size: inherit;
+    line-height: 1;
   }
 
   .ornament-line {

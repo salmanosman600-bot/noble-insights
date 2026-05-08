@@ -12,5 +12,8 @@ export const QUERY_KEYS = {
     // Uthmani Arabic text from alquran.cloud — separate from translation cache.
     uthmaniSura: (suraNumber: number) =>
       ['quran', 'uthmani-sura', suraNumber] as const,
+    // QCF V2 word glyphs from api.qurancdn.com — needed for per-page font rendering.
+    qcfSura: (suraNumber: number) =>
+      ['quran', 'qcf-sura', suraNumber] as const,
   },
 } as const;

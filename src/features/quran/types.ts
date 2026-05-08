@@ -67,3 +67,42 @@ export interface UthmaniSurahResponse {
   status: string;
   data: UthmaniSurah;
 }
+
+// ── QCF V2 word-level types (api.qurancdn.com) ───────────────────────────────
+// Each word carries a `code_v2` PUA glyph and `page_number` (1–604) which
+// determines which per-page font file to load.  The QCF V2 fonts are NOT
+// Unicode — each glyph is a full word shape encoded in the Private Use Area.
+
+export type WordCharType = 'word' | 'end' | 'chapter_number';
+
+export interface QcfWord {
+  id: number;
+  position: number;
+  char_type_name: WordCharType;
+  page_number: number;
+  line_number: number;
+  /** Standard Unicode text (for accessibility / fallback). */
+  text: string;
+  /** PUA glyph character for QCF V2 per-page fonts. */
+  code_v2: string;
+}
+
+export interface QcfVerse {
+  id: number;
+  verse_number: number;
+  /** "1:1" format */
+  verse_key: string;
+  page_number: number;
+  juz_number: number;
+  words: QcfWord[];
+}
+
+export interface QcfVersesResponse {
+  verses: QcfVerse[];
+  meta: {
+    total_count: number;
+    current_page: number;
+    next_page: number | null;
+    per_page: number;
+  };
+}
