@@ -29,22 +29,28 @@
  * Works with standard Unicode Quran text (Hafs ʿan ʿĀṣim).
  */
 /*
- * Primary CDN: verses.quran.foundation (Quran Foundation — fast, reliable, CORS *).
- * Fallback:    qurancomplex.gov.sa (official KFGQPC host).
- * Local:       system copy if the user already has the font installed.
+ * Priority 1: system copy (if already installed).
+ * Priority 2: bundled local files in /public/fonts/ (UthmanicHafs1Ver17, Ver13, HafsFontV09).
+ * Priority 3: CDN — verses.quran.foundation (fast, CORS *).
+ * Priority 4: CDN — qurancomplex.gov.sa (official KFGQPC host).
  */
 @font-face {
   font-family: 'QCF Hafs';
   src:
     local('KFGQPC Uthmanic Script HAFS'),
     local('UthmanicHafs_v20'),
+    url('/fonts/UthmanicHafs1Ver17.ttf') format('truetype'),
+    url('/fonts/UthmanicHafs1Ver13.otf') format('opentype'),
+    url('/fonts/HafsFontV09.otf') format('opentype'),
     url('https://verses.quran.foundation/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2') format('woff2'),
     url('https://fonts.qurancomplex.gov.sa/wp-content/uploads/2020/01/UthmanicHafs1Ver18.woff2') format('woff2'),
     url('https://fonts.qurancomplex.gov.sa/wp-content/uploads/2020/01/UthmanicHafs1Ver18.woff') format('woff');
-  font-display: swap;
+  font-display: block;
   font-weight: 400;
   font-style: normal;
-  unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF;
+  /* No unicode-range: the Uthmani text from alquran.cloud uses Arabic Extended-A
+     (U+08A0-08FF) for tajweed marks — restricting the range causes those characters
+     to fall back to a system font that renders them as boxes. */
 }
 
 @tailwind base;

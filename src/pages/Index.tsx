@@ -103,9 +103,9 @@ const Index = () => {
             initial="hidden" animate="visible" variants={fade} custom={4}
           >
             <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-primary/50" />114 {translit('Sura')}</span>
-            <span className="text-border">\u00b7</span>
+            <span className="text-border">{`\u00b7`}</span>
             <span>6 236 {translit('Oyat')}</span>
-            <span className="text-border">\u00b7</span>
+            <span className="text-border">{`\u00b7`}</span>
             <span>30 {translit('Juz')}</span>
           </motion.div>
         </div>
