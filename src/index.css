@@ -47,7 +47,8 @@
     url('https://fonts.qurancomplex.gov.sa/wp-content/uploads/2020/01/UthmanicHafs1Ver18.woff') format('woff');
   font-display: block;
   font-weight: 400;
-  font-style: normal;
+  font-style: normal; 
+  
   /* No unicode-range: the Uthmani text from alquran.cloud uses Arabic Extended-A
      (U+08A0-08FF) for tajweed marks — restricting the range causes those characters
      to fall back to a system font that renders them as boxes. */
