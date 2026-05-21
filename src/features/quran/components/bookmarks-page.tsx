@@ -7,10 +7,12 @@ import Link from 'next/link';
 import { routes } from '@/config/routes';
 import { surahs } from '@/features/quran/data/surahs';
 import { useBookmarkStore } from '../store/bookmark.store';
+import { useTranslit } from '../hooks/use-translit';
 
 const BookmarksPage = () => {
   const bookmarks = useBookmarkStore((s) => s.bookmarks);
   const toggle = useBookmarkStore((s) => s.toggle);
+  const translit = useTranslit();
 
   const parsed = bookmarks
     .map((key) => {
@@ -59,12 +61,12 @@ const BookmarksPage = () => {
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="font-quran text-xl text-warm">{surah.name}</p>
+                    <p className="font-amiri text-xl text-warm" dir="rtl">{surah.name}</p>
                     <p className="mt-1 text-sm font-medium text-foreground">
-                      {surah.transliteration}
+                      {translit(surah.translationUz, surah.translationUzLat)}
                     </p>
                     <p className="mt-0.5 text-xs text-muted-foreground">
-                      {surah.translation} · {verseNum}-oyat
+                      {verseNum}-oyat
                     </p>
                   </div>
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-secondary text-xs font-semibold text-muted-foreground">

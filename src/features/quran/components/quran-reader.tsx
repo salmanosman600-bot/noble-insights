@@ -10,6 +10,7 @@ import {
     Bookmark,
     BookmarkCheck,
     Copy,
+    Loader2,
     Minus,
     Plus,
     RefreshCw,
@@ -37,8 +38,8 @@ const clampSuraId = (raw: string | null): number => {
   return Math.floor(n);
 };
 
-const renderTranslation = (text: string, script: Script) =>
-  script === 'latin' ? transliterateUzbekToLatin(text) : text;
+const renderTranslation = (text: string, script: Script, latinOverride?: string) =>
+  script === 'latin' ? (latinOverride ?? transliterateUzbekToLatin(text)) : text;
 
 const QuranReader = () => {
   const searchParams = useSearchParams();
@@ -48,6 +49,7 @@ const QuranReader = () => {
   const [arabicSize, setArabicSize] = useState(28);
   const [translationSize, setTranslationSize] = useState(18);
   const [showSettings, setShowSettings] = useState(false);
+  const [sharingVerseId, setSharingVerseId] = useState<string | null>(null);
   const script = useScriptStore((s) => s.script);
   const bookmarks = useBookmarkStore((s) => s.bookmarks);
   const toggleBookmarkInStore = useBookmarkStore((s) => s.toggle);
@@ -76,18 +78,70 @@ const QuranReader = () => {
   );
 
   const shareVerse = useCallback(
-    (verse: Aya) => {
-      const translation = renderTranslation(verse.translation, script);
-      if (navigator.share) {
-        navigator.share({
-          title: `${currentSurah.transliteration} ${verse.sura}:${verse.aya}`,
-          text: `${verse.arabic_text}\n\n${translation}`,
-        });
-      } else {
-        copyVerse(verse);
+    async (verse: Aya) => {
+      setSharingVerseId(verse.id);
+      try {
+        const { default: html2canvas } = await import('html2canvas');
+
+        // Find the actual rendered card in the DOM
+        const card = document.querySelector<HTMLElement>(`[data-verse-id="${verse.id}"]`);
+        if (!card) throw new Error('card not found');
+
+        // Temporarily hide the action buttons row during capture
+        const actionsRow = card.querySelector<HTMLElement>('[data-capture-hide]');
+        if (actionsRow) actionsRow.style.visibility = 'hidden';
+
+        // Resolve the actual background colour from computed style (CSS vars → real value)
+        const bgColor = getComputedStyle(card).backgroundColor;
+
+        let blob: Blob;
+        try {
+          const canvas = await html2canvas(card, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: bgColor || '#0f172a',
+            logging: false,
+          });
+          blob = await new Promise<Blob>((resolve, reject) =>
+            canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('blob'))), 'image/png'),
+          );
+        } finally {
+          if (actionsRow) actionsRow.style.visibility = '';
+        }
+
+        const surahName = renderTranslation(currentSurah.translationUz, script, currentSurah.translationUzLat);
+        const file = new File([blob], `quran-${verse.sura}-${verse.aya}.png`, { type: 'image/png' });
+
+        // Try native file share (works on mobile + some desktop)
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({ files: [file], title: `${surahName} ${verse.sura}:${verse.aya}` });
+          return;
+        }
+
+        // Fallback: copy image to clipboard
+        if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+          toast.success("Rasm buferga nusxa olindi — joylashtiring (Ctrl+V)");
+          return;
+        }
+
+        // Last resort: data URL download
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.download = `quran-${verse.sura}-${verse.aya}.png`;
+        a.href = url;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 10_000);
+        toast.success('Rasm yuklab olindi');
+      } catch (err) {
+        if (err instanceof Error && err.name !== 'AbortError') {
+          toast.error("Ulashib bo'lmadi");
+        }
+      } finally {
+        setSharingVerseId(null);
       }
     },
-    [currentSurah, script, copyVerse],
+    [currentSurah, script],
   );
 
   const playAudio = useCallback(() => {
@@ -111,14 +165,14 @@ const QuranReader = () => {
               </Link>
               <div className="hidden sm:block">
                 <h1 className="text-base font-semibold text-foreground">
-                  {currentSurah.transliteration}
+                  {renderTranslation(currentSurah.translationUz, script, currentSurah.translationUzLat)}
                 </h1>
                 <p className="text-xs text-muted-foreground">
                   {currentSurah.translation} · {currentSurah.totalVerses} oyat · {currentSurah.type}
                 </p>
               </div>
               <span
-                className="font-hafs text-warm"
+                className="font-amiri text-warm"
                 style={{ fontSize: 28, lineHeight: 1.6 }}
                 dir="rtl"
                 aria-label={currentSurah.transliteration}
@@ -246,10 +300,11 @@ const QuranReader = () => {
                 return (
                   <div
                     key={verse.id}
+                    data-verse-id={verse.id}
                     className="group rounded-2xl border bg-card p-7 transition-all duration-300 hover:shadow-sm"
                   >
                     {/* Verse Number & Actions */}
-                    <div className="mb-5 flex items-center justify-between">
+                    <div data-capture-hide className="mb-5 flex items-center justify-between">
                       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary text-xs font-semibold text-muted-foreground">
                         {verse.aya}
                       </div>
@@ -295,9 +350,12 @@ const QuranReader = () => {
                           size="icon"
                           className="h-8 w-8 text-muted-foreground"
                           onClick={() => shareVerse(verse)}
-                          aria-label="Oyatni ulashish"
+                          disabled={sharingVerseId === verse.id}
+                          aria-label="Oyatni rasm sifatida ulashish"
                         >
-                          <Share2 className="h-3.5 w-3.5" />
+                          {sharingVerseId === verse.id
+                            ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            : <Share2 className="h-3.5 w-3.5" />}
                         </Button>
                         <Button
                           variant="ghost"
@@ -351,7 +409,7 @@ const QuranReader = () => {
           <div className="mt-12 flex items-center justify-between">
             {prevSuraId ? (
               <Link href={routes.surah(prevSuraId)}>
-                <Button variant="outline">← {surahs[prevSuraId - 1].transliteration}</Button>
+                <Button variant="outline">← {renderTranslation(surahs[prevSuraId - 1].translationUz, script, surahs[prevSuraId - 1].translationUzLat)}</Button>
               </Link>
             ) : (
               <Button variant="outline" disabled className="text-muted-foreground">
@@ -360,7 +418,7 @@ const QuranReader = () => {
             )}
             {nextSuraId ? (
               <Link href={routes.surah(nextSuraId)}>
-                <Button variant="outline">{surahs[nextSuraId - 1].transliteration} →</Button>
+                <Button variant="outline">{renderTranslation(surahs[nextSuraId - 1].translationUz, script, surahs[nextSuraId - 1].translationUzLat)} →</Button>
               </Link>
             ) : (
               <Button variant="outline" disabled className="text-muted-foreground">

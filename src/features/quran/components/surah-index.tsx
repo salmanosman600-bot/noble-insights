@@ -29,6 +29,7 @@ const SurahIndex = () => {
         (s) =>
           s.transliteration.toLowerCase().includes(q) ||
           s.translationUz.toLowerCase().includes(q) ||
+          s.translationUzLat.toLowerCase().includes(q) ||
           s.translation.toLowerCase().includes(q) ||
           s.name.includes(q) ||
           s.id.toString() === q,
@@ -114,10 +115,10 @@ const SurahIndex = () => {
               </div>
               <div className="min-w-0 flex-1 flex items-center justify-between gap-3">
                 <div>
-                  <span className="block text-sm font-medium text-foreground">{translit(surah.translationUz)}</span>
+                  <span className="block text-sm font-medium text-foreground">{translit(surah.translationUz, surah.translationUzLat)}</span>
                   <span className="block text-xs text-muted-foreground">{surah.totalVerses} oyat</span>
                 </div>
-                <span className="font-hafs text-2xl text-warm leading-none shrink-0" dir="rtl">{surah.name}</span>
+                <span className="font-amiri text-2xl text-warm leading-none shrink-0" dir="rtl">{surah.name}</span>
               </div>
             </Link>
           ))}

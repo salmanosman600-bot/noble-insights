@@ -8,7 +8,7 @@ import { routes } from '@/config/routes';
 import { motion } from 'framer-motion';
 import { Search, Grid3X3, List } from 'lucide-react';
 import Link from 'next/link';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 const fade = {
   hidden: { opacity: 0, y: 20 },
@@ -28,6 +28,8 @@ const Index = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [sortBy, setSortBy] = useState<SortMode>('mushaf');
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
   const filtered = useMemo(() => {
     let result = surahs;
@@ -38,6 +40,7 @@ const Index = () => {
         (s) =>
           s.transliteration.toLowerCase().includes(q) ||
           s.translationUz.toLowerCase().includes(q) ||
+          s.translationUzLat.toLowerCase().includes(q) ||
           s.translation.toLowerCase().includes(q) ||
           s.name.includes(q) ||
           s.id.toString() === q,
@@ -60,7 +63,7 @@ const Index = () => {
         <div className="container relative z-10 py-20 text-center lg:py-32">
           <motion.div
             className="mx-auto mb-8 flex w-fit items-center gap-3"
-            initial="hidden" animate="visible" variants={fade} custom={0}
+            initial="hidden" animate={mounted ? 'visible' : 'hidden'} variants={fade} custom={0}
           >
             <div className="h-px w-14 bg-gradient-to-r from-transparent to-warm/60" />
             <span className="section-eyebrow">{translit("Qur'oni Karim Platformasi")}</span>
@@ -71,20 +74,20 @@ const Index = () => {
             className="font-hafs text-5xl text-primary md:text-6xl"
             style={{ lineHeight: 1.9 }}
             dir="rtl"
-            initial="hidden" animate="visible" variants={fade} custom={1}
+            initial="hidden" animate={mounted ? 'visible' : 'hidden'} variants={fade} custom={1}
           >
             {'\u0628\u0650\u0633\u0652\u0645\u0650 \u0671\u0644\u0644\u0651\u064e\u0647\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0670\u0646\u0650 \u0671\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650'}
           </motion.p>
 
           <motion.h1
             className="mx-auto mt-6 max-w-2xl text-balance text-foreground"
-            initial="hidden" animate="visible" variants={fade} custom={2}
+            initial="hidden" animate={mounted ? 'visible' : 'hidden'} variants={fade} custom={2}
           >
             {translit("Qur'oni Karim uchun nozik raqamli tajriba")}
           </motion.h1>
 
           {/* Search */}
-          <motion.div className="mx-auto mt-8 max-w-lg" initial="hidden" animate="visible" variants={fade} custom={3}>
+          <motion.div className="mx-auto mt-8 max-w-lg" initial="hidden" animate={mounted ? 'visible' : 'hidden'} variants={fade} custom={3}>
             <div className="flex items-center gap-3.5 rounded-2xl border border-primary/15 bg-card px-6 py-4 shadow-sm">
               <Search className="h-[18px] w-[18px] text-warm shrink-0" />
               <input
@@ -100,7 +103,7 @@ const Index = () => {
 
           <motion.div
             className="mt-10 flex items-center justify-center gap-6 text-[13px] text-muted-foreground"
-            initial="hidden" animate="visible" variants={fade} custom={4}
+            initial="hidden" animate={mounted ? 'visible' : 'hidden'} variants={fade} custom={4}
           >
             <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-primary/50" />114 {translit('Sura')}</span>
             <span className="text-border">{`\u00b7`}</span>
@@ -166,10 +169,10 @@ const Index = () => {
               </div>
               <div className="min-w-0 flex-1 flex items-center justify-between gap-3">
                 <div>
-                  <span className="block text-sm font-medium text-foreground">{translit(surah.translationUz)}</span>
+                  <span className="block text-sm font-medium text-foreground">{translit(surah.translationUz, surah.translationUzLat)}</span>
                   <span className="block text-xs text-muted-foreground">{surah.totalVerses} oyat</span>
                 </div>
-                <span className="font-hafs text-2xl text-warm leading-none shrink-0" dir="rtl">{surah.name}</span>
+                <span className="font-amiri text-2xl text-warm leading-none shrink-0" dir="rtl">{surah.name}</span>
               </div>
             </Link>
           ))}
